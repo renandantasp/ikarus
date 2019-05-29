@@ -6,6 +6,7 @@ function love.load()
     ---------------------------
 
     ------------===Gameplay===----------
+    require "nave"
     require "bullet"
     require "player"
     ------------------------------------

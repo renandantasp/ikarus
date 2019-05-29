@@ -1,29 +1,32 @@
-Player = Object:extend()
-Bullet:implement()
+Player = Nave:extend()
 
 
 function Player:new()
-
+    Player.super.new(self)
     --==GAMEPLAY==--
-    
-    --Posição e Tamanho--
-    self.x = love.graphics.getWidth()/2
-    self.y = (love.graphics.getHeight()/3)*2
-    self.width = 50*wScale
-    self.height = 50*wScale
-    self.teste = 0
-    
     --Velocidade e força do tiro
     self.shootRate = 6
     self.shootSpeed = 750
-    self.shootDamage = 1
     self.shootTimer = 0
-    self.bullet = {}
+
+    --Buffs da rotação---
+    self.buffSpeed    = 0
+    self.buffDmg      = 0
+    self.buffFireRate = 0
+    ---------------------
+
+    --Buffs---------
+    self.shield = 0
+    self.spread = 0
+    ----------------
+    
+    --Bullet----------
+    self.bullet  = {}
+    self.buffVec = {}
+    ------------------
 
     --Atributos do player
-    self.health = 10
-    self.originalSpeed = 100*wScale
-    self.speed = 300*wScale
+    
 
 end
 
