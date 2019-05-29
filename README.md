@@ -30,8 +30,10 @@ Wave 5 seria o boss ;D
 
 
 ## Buffs
+- Fire Rate
+  - Aumenta a velocidade dos tiros
 - Speed
-  - Aumenta a velocidade dos tiros a.k.a. _fire rate_
+  - Velocidade da nave
 - Power
   - Aumenta o dano dos tios
 - Spread
@@ -44,16 +46,17 @@ Dentro das waves estarão espalhados os seguintes buffs
 
 | BUFFS        | Level 1  | Level 2   | Level 3  |
 | ------------ | ------------ | ------------ | ------------ |
-|Speed       | 1.3  | 1.6  | 1.9  |
-|Power       | 1.3  | 1.6  | 1.9  |
+|Fire Rate   | 1.3  | 1.6  | X  |
+|Speed       | 1.3  | 1.6  | X  |
+|Power       | 1.3  | 1.6  | X  |
 |Spread      | 3x  | 5x  | X  |
 |Shield      | +1  | +2  | +3  |
 
 
 
-Buffs de Speed e Power só podem acumular 3x, por exemplo
-- speed level 3 + power level 1 + power level 2
-- speed level 1 + speed level 1 + speed level 2
+Buffs de Speed e Power e Fire Rate só podem acumular 3x, por exemplo
+- speed level 1 + power level 1 + fire rate level 1
+- speed level 1 + speed level 1 + speed level 1
 
 Se o jogador pegar mais um buff, ele irá substituir o primeiro que ele encontrou
 
