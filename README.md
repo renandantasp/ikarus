@@ -52,8 +52,8 @@ Dentro das waves estarão espalhados os seguintes buffs
 
 
 Buffs de Speed e Power só podem acumular 3x, por exemplo
-speed level 3 + power level 1 + power level 2
-speed level 1 + speed level 1 + speed level 2
+- speed level 3 + power level 1 + power level 2
+- speed level 1 + speed level 1 + speed level 2
 
 Se o jogador pegar mais um buff, ele irá substituir o primeiro que ele encontrou
 
