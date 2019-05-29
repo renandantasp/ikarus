@@ -9,8 +9,8 @@ function Player:new()
     --Posição e Tamanho--
     self.x = love.graphics.getWidth()/2
     self.y = (love.graphics.getHeight()/3)*2
-    self.width = 50
-    self.height = 50
+    self.width = 50*wScale
+    self.height = 50*wScale
     self.teste = 0
     
     --Velocidade e força do tiro
@@ -22,8 +22,8 @@ function Player:new()
 
     --Atributos do player
     self.health = 10
-    self.originalSpeed = 100
-    self.speed = 300
+    self.originalSpeed = 100*wScale
+    self.speed = 300*wScale
 
 end
 

@@ -14,5 +14,5 @@ function Bullet:update(dt)
 end
 
 function Bullet:draw()
-    love.graphics.circle("line",self.x,self.y-10,8) --balinha placeholder
+    love.graphics.circle("line",self.x,self.y-10,8*wScale) --balinha placeholder
 end
