@@ -6,20 +6,27 @@ function love.load()
     ---------------------------
 
     ------------===Gameplay===----------
+    
     require "nave"
     require "bullet"
     require "player"
+    require "gameManager"
     ------------------------------------
 
     pl = Player()
+    
+
+    
+
+    gm =  GameManager(p1)
 end
 
 
 function love.update(dt)
-    pl:update(dt)
+    gm:update(dt)
 end
 
 function love.draw()
-    pl:draw()
+    gm:draw()
     
 end
