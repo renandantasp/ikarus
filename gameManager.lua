@@ -13,6 +13,10 @@ function GameManager:update(dt)
     
     if self.curState == self.states.onGame then
         pl:update(dt)
+    elseif self.curState == self.states.onMenu then
+
+    elseif self.curState == self.states.pause then
+
     end
 end
 
@@ -22,6 +26,6 @@ function GameManager:draw()
     elseif self.curState == self.states.onMenu then
 
     elseif self.curState == self.states.pause then
-
+        pl:draw()
     end
 end
