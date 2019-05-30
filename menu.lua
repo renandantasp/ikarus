@@ -29,10 +29,14 @@ end
 
 function Menu:draw()
     if self.curSelect%2 == 1 then
-        love.graphics.rectangle("fill", love.graphics.getWidth()/6, love.graphics.getHeight()/2, 100,25)
+        love.graphics.rectangle("line", love.graphics.getWidth()/6+20, love.graphics.getHeight()/2, 100,25)
+        love.graphics.print("PLAY",love.graphics.getWidth()/6+35+20, love.graphics.getHeight()/2+5)
         love.graphics.rectangle("line", love.graphics.getWidth()/6, love.graphics.getHeight()/2+50, 100,25)
+        love.graphics.print("QUIT",love.graphics.getWidth()/6+35, love.graphics.getHeight()/2+55)
     elseif self.curSelect%2 == 0 then
         love.graphics.rectangle("line", love.graphics.getWidth()/6, love.graphics.getHeight()/2, 100,25)
-        love.graphics.rectangle("fill", love.graphics.getWidth()/6, love.graphics.getHeight()/2+50, 100,25)
+        love.graphics.print("PLAY",love.graphics.getWidth()/6+35, love.graphics.getHeight()/2+5)
+        love.graphics.rectangle("line", love.graphics.getWidth()/6+20, love.graphics.getHeight()/2+50, 100,25)
+        love.graphics.print("QUIT",love.graphics.getWidth()/6+35+20, love.graphics.getHeight()/2+55)
     end
 end
