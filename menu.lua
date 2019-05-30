@@ -10,16 +10,18 @@ end
 function Menu:update()
     
     function love.keypressed(key,scancode,isrepeat)
-        if key == 'up' then
-            self.curSelect = self.curSelect - 1
-        elseif key == 'down' then
-            self.curSelect = self.curSelect - 1
-        end
-        if key == 'z' and gm.curState == 1 then
-            if self.curSelect%2 == 1 then
-                gm.curState = 2
-            elseif self.curSelect%2 == 0 then
-                love.event.quit()
+        if gm.curState == 1 then
+            if key == 'up' then
+                self.curSelect = self.curSelect - 1
+            elseif key == 'down' then
+                self.curSelect = self.curSelect - 1
+            end
+            if key == 'z' then
+                if self.curSelect%2 == 1 then
+                    gm.curState = 2
+                elseif self.curSelect%2 == 0 then
+                    love.event.quit()
+                end
             end
         end
     end
