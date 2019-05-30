@@ -1,9 +1,10 @@
 GameManager = Object:extend()
 
-function GameManager:new(p1)
-    self.player = p1
+function GameManager:new()
+    self.player = Player()
+    self.menu = Menu(self)
     self.states = {["onMenu"] = 1, ["onGame"] = 2, ["pause"] = 3}
-    self.curState = self.states.onGame
+    self.curState = self.states.onMenu
 end
 
 
@@ -12,9 +13,9 @@ end
 function GameManager:update(dt)
     
     if self.curState == self.states.onGame then
-        pl:update(dt)
+        self.player:update(dt)
     elseif self.curState == self.states.onMenu then
-
+        self.menu:update()
     elseif self.curState == self.states.pause then
 
     end
@@ -22,10 +23,10 @@ end
 
 function GameManager:draw()
     if self.curState == self.states.onGame then
-        pl:draw()
+        self.player:draw()
     elseif self.curState == self.states.onMenu then
-
+        self.menu:draw()
     elseif self.curState == self.states.pause then
-        pl:draw()
+        self.player:draw()
     end
 end

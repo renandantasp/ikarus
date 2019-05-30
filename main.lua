@@ -13,14 +13,11 @@ function love.load()
     require "player"
     require "enemies.default"
     require "gameManager"
+    require "menu"
     ------------------------------------
 
-    pl = Player()
-    
 
-    
-
-    gm =  GameManager(p1)
+    gm =  GameManager()
     --gm:load()
 end
 
