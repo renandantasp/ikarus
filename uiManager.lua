@@ -1,6 +1,6 @@
-GameManager = Object:extend()
+UiManager = Object:extend()
 
-function GameManager:new()
+function UiManager:new()
     self.player = Player()
     self.menu = Menu(self)
     self.states = {["onMenu"] = 1, ["onGame"] = 2, ["pause"] = 3}
@@ -10,7 +10,7 @@ end
 
 
 
-function GameManager:update(dt)
+function UiManager:update(dt)
     
     if self.curState == self.states.onGame then
         self.player:update(dt)
@@ -21,7 +21,7 @@ function GameManager:update(dt)
     end
 end
 
-function GameManager:draw()
+function UiManager:draw()
     if self.curState == self.states.onGame then
         self.player:draw()
         love.graphics.setColor(0.3,0.3,0.3)

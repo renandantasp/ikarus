@@ -1,7 +1,7 @@
 Menu = Object:extend()
 
 function Menu:new(gm)
-    self.gm = gm -- receve o gameManager, assim tem acesso aos estados do jogo
+    self.gm = gm -- recebe o uiManager, assim tem acesso aos estados do jogo
     self.menus = {["play"] = 1, ["quit"] = 2} -- lista dos menus 
     self.curSelect =  1 -- opção atual
 

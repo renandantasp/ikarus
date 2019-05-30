@@ -12,12 +12,12 @@ function love.load()
     require "bullet"
     require "player"
     require "enemies.default"
-    require "gameManager"
+    require "uiManager"
     require "menu"
     ------------------------------------
 
 
-    gm =  GameManager()
+    gm =  UiManager()
     --gm:load()
 end
 
