@@ -6,10 +6,12 @@ function love.load()
     ---------------------------
 
     ------------===Gameplay===----------
-    
+    require "path.pathLib"
+    require "path.path"    
     require "nave"
     require "bullet"
     require "player"
+    require "enemies.default"
     require "gameManager"
     ------------------------------------
 
