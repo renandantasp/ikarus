@@ -1,13 +1,13 @@
 Nave = Object:extend()
 
-function Nave:new()
+function Nave:new(size)
     --Posição e Tamanho--
     self.x = love.graphics.getWidth()/2
     self.y = (love.graphics.getHeight()/3)*2
-    self.width = 50*wScale
-    self.height = 50*wScale
+    self.width = size*wScale
+    self.height = size*wScale
     ---------------------
-    
+
     self.health = 10
     self.speed = 300*wScale
     self.shootDamage = 1

@@ -2,11 +2,10 @@ Player = Nave:extend()
 
 
 function Player:new()
-    Player.super.new(self)
+    Player.super.new(self,50)
     --==GAMEPLAY==--
     --Velocidade e força do tiro
-    self.shootRate = 6
-    self.shootSpeed = 750
+    self.shootRate = 3
     self.shootTimer = 0
 
     --Buffs da rotação---
