@@ -49,8 +49,8 @@ function Player:movement(dt)
     if self.x + self.width > love.graphics.getWidth() then
         self.x = love.graphics.getWidth() - self.width
     end
-    if self.x < 0 then
-        self.x = 0
+    if self.x < 700*wScale then
+        self.x = 700*wScale
     end
     if self.y + self.height > love.graphics.getHeight() then
         self.y = love.graphics.getHeight() - self.height
