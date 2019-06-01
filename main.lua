@@ -14,6 +14,7 @@ function love.load()
     require "enemies.default"
     require "uiManager"
     require "menu"
+    require "gameManager"
     ------------------------------------
 
 
