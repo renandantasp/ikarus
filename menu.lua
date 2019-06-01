@@ -16,7 +16,7 @@ function Menu:update()
             elseif key == 'down' then
                 self.curSelect = self.curSelect - 1
             end
-            if key == 'z' then
+            if key == 'z' or key == 'return' then
                 if self.curSelect%2 == 1 then
                     gm.curState = 2
                 elseif self.curSelect%2 == 0 then
