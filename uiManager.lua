@@ -2,9 +2,7 @@ UiManager = Object:extend()
 
 function UiManager:new()
     self.gameManager = GameManager()
-    
     self.menu = Menu(self)
-    
     self.states = {["onMenu"] = 1, ["onGame"] = 2, ["pause"] = 3}
     self.curState = self.states.onMenu
 end
