@@ -10,6 +10,7 @@ function love.load()
     require "path.path"    
     require "nave"
     require "bullet"
+    require "buff"
     require "player"
     require "enemies.default"
     require "uiManager"
@@ -18,7 +19,7 @@ function love.load()
     ------------------------------------
 
 
-    gm =  UiManager()
+    gm =  GameManager()
     --gm:load()
 end
 
