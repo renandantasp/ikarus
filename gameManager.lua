@@ -1,6 +1,7 @@
 GameManager = Object:extend()
 
 function GameManager:new()
+    self.buff = Buff('power', 30, 100, 0)
     self.enemies = {DefaultE()}
     self.player = Player()
 end
@@ -12,11 +13,13 @@ function GameManager:update(dt)
         self.collide(self.player.bullet,self.enemies)
     end]]--
     
+    self.buff:update(dt)
 end
 
 function GameManager:draw()
     self.player:draw()
     self.enemies[1]:draw()
+    self.buff:draw()
     love.graphics.setColor(0.3,0.3,0.3)
     love.graphics.rectangle("fill",0,0,700*wScale,1200*wScale)
     love.graphics.setColor(1,1,1)
