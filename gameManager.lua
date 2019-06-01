@@ -8,6 +8,9 @@ end
 function GameManager:update(dt)
     self.player:update(dt)
     self.enemies[1]:update(dt)
+    --[[if  not(next(self.player.bullet) == nil) and not(next(self.enemies) == nil) then
+        self.collide(self.player.bullet,self.enemies)
+    end]]--
     
 end
 
@@ -21,11 +24,15 @@ function GameManager:draw()
 end
 
 function GameManager:collide(blts, enemies)
-    Dx =  blt.x - (self.x+self.width/2)
-    Dy =  blt.y - (self.y+self.height/2)
-    if Dx <= self.width/2 and Dy <= self.height/2 then
-        return true
-    else
-        return false
+    for n,blt in ipairs(blts) do
+        for m, enem in ipairs(enemies) do
+        Dx =  blt.x - (self.x+self.width/2)
+        Dy =  blt.y - (self.y+self.height/2)
+            if Dx <= self.width/2 and Dy <= self.height/2 then
+                return true
+            else
+                return false
+            end
+        end
     end
 end
