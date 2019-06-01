@@ -3,7 +3,7 @@ DefaultE = Nave:extend()
 function DefaultE:new()
     DefaultE.super.new(self,50)
     self.x = math.random(700*wScale,love.graphics.getWidth())
-    self.y = 100
+    self.y = 0
     self.shootRate = 6
     self.shootTimer = 0
     self.bullet  = {}
