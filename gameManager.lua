@@ -9,33 +9,38 @@ function GameManager:new()
 end
 
 function GameManager:update(dt)
-    --print(type(self.enemies))
-    self:spawnE(dt)
-    self:spawnB(dt)
-    self.player[1]:update(dt)
+    
+    self:spawnE(dt) --Função para spawnar um inimigo
+    self:spawnB(dt) --Função para spawnar um buff
+    self.player[1]:update(dt) 
     for n,enem in ipairs(self.enemies) do
         enem:update(dt)
     end
-    --self.enemies[1]:update(dt)
-    self.blts =  self.player.bullet
-    self:collide(self.player[1].bullet,self.enemies)
-    self:collide(self.player,self.enemies)
-    self:collide(self.player,self.buff)
-    --print(type(self.player.bullet))
     for n,buffs in ipairs(self.buff) do
         buffs:update(dt)
     end
+    
+    self.blts =  self.player.bullet
+    
+    --COLISÕES--
+    self:collide(self.player[1].bullet,self.enemies)
+    self:collide(self.player,self.enemies)
+    self:collide(self.player,self.buff)
+   
+    
 end
 
 function GameManager:draw()
     self.player[1]:draw()
-    for n,enem in ipairs(self.enemies) do
+    for n,enem in ipairs(self.enemies) do --Desenha todos os inimigos dentro da table enemies
         enem:draw()
     end
-    --self.enemies[1]:draw()
-    for n,buffs in ipairs(self.buff) do
+    
+    for n,buffs in ipairs(self.buff) do --Desenha todos os buffs presentes na table buff
         buffs:draw()
     end
+
+    --Desenho do painel lateral--
     love.graphics.setColor(0.3,0.3,0.3)
     love.graphics.rectangle("fill",0,0,700*wScale,1200*wScale)
     love.graphics.setColor(1,1,1)
@@ -43,11 +48,12 @@ function GameManager:draw()
 end
 
 function GameManager:collide(a, b)
+    --função recebe duas table, e confere se cada elemento de cada table esta colidindo ou não
     for n,blt in ipairs(a) do
         for m, enem in ipairs(b) do
             local a_left = enem.x-10
             local a_top = enem.y-10
-            if b == self.enemies or a ==  self.player[1].bullet then
+            if b == self.enemies or a ==  self.player[1].bullet then --caso a colisão seja entre inimigos e balas ou inimigos e player
                 local a_right = enem.x + enem.width +10
                 local a_bottom = enem.y + enem.height + 10
                 if a_left<blt.x and a_right>blt.x and a_top<blt.y and a_bottom>blt.y then
@@ -56,10 +62,12 @@ function GameManager:collide(a, b)
                         table.remove(self.player[1].bullet,n)
                     end
                 end
-            elseif b == self.buff then
+            elseif b == self.buff then -- caso a colisao seja entre player e buff
                 if enem.x-10 < blt.x and enem.x+10 > blt.x and enem.y-10 < blt.y and enem.y+10 > blt.y then
+                    if enem.tipo == "speed" then
+                        self.player[1].buffSpeed = self.player[1].buffSpeed + 1 
+                    end
                     table.remove(self.buff,m)
-                    self.player[1].buffSpeed = self.player[1].buffSpeed + 1 
                 end
             end
             

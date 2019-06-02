@@ -6,6 +6,7 @@ function Buff:new(tipo, valor, x, y)
     self.x = x * wScale + 700 * wScale
     self.y = y * wScale
 
+    --Define qual tipo de imagem de buff vai usar
     if self.tipo == "power" then
         self.image = love.graphics.newImage("artwork/gfx/UI/inGame/Pw-Sheet.png")
     elseif self.tipo == "speed" then
@@ -13,10 +14,7 @@ function Buff:new(tipo, valor, x, y)
     elseif self.tipo == "fireRate" then
         self.image = love.graphics.newImage("artwork/gfx/UI/inGame/Fr-Sheet.png")
     end
-
-
-
-
+    
     self.g = anim.newGrid(18,10,self.image:getWidth(), self.image:getHeight())
     self.idle = anim.newAnimation(self.g('1-2',1), 0.1)
 
