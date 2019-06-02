@@ -24,6 +24,10 @@ function Player:new()
     self.buffVec = {}
     ------------------
 
+    self.image = love.graphics.newImage("artwork/gfx/naves/player.png")
+    self.g = anim.newGrid(25,32,self.image:getWidth(), self.image:getHeight())
+    self.idle = anim.newAnimation(self.g('1-2',1), 0.1)
+
     --Atributos do player
     
 
@@ -70,6 +74,10 @@ end
 function Player:update(dt)
     self:movement(dt)
     
+
+    
+    self.idle:update(dt)
+
     if love.keyboard.isDown('z') then
             if self.shootTimer <= 0 then --se o timer estiver zerado, poderá chamar shoot()
                 self:shoot()
@@ -100,8 +108,8 @@ end
 
 function Player:draw()  
     --um triangulo mega placeholder
-    love.graphics.polygon("line",self.x,    self.y+self.height,  self.x+(self.width/2),  self.y,   self.x+self.width,self.y+self.height)
-
+    --love.graphics.polygon("line",self.x,    self.y+self.height,  self.x+(self.width/2),  self.y,   self.x+self.width,self.y+self.height)
+    self.idle:draw(self.image,self.x,self.y,0,3*wScale,3*wScale,0,5*wScale)
     for i, blt in pairs(self.bullet) do
         blt:draw() --desenhar cada bala instanciada
     end

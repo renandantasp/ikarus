@@ -43,6 +43,7 @@ function GameManager:collide(a, b)
             local a_bottom = enem.y + enem.height + 10
             if a_left<blt.x and a_right>blt.x and a_top<blt.y and a_bottom>blt.y then
                 table.remove(self.enemies,m)
+                table.remove(self.player.bullet,n)
             end
         end
     end
