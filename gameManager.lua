@@ -6,12 +6,33 @@ function GameManager:new()
     self.enemies = {}
     self.spawnTimerE = 3
     self.spawnTimerB = 4
+    self.enemyIndex = 1
+
+    self.wave1 = {
+        DefaultE("red"),DefaultE("yellow"),
+        DefaultE("green"),DefaultE("yellow"),
+        DefaultE("purple"),DefaultE("red"),
+        DefaultE("purple"),DefaultE("green")
+    }
+    self.wave2 = {}
+    self.wave3 = {}
+    self.wave4 = {}
+
+
+    --Imagens da Hud
+    self.bg = love.graphics.newImage("artwork/HUD.png")
+    self.logo = love.graphics.newImage("artwork/J-IKARUS.png")
+    self.uiHP = love.graphics.newImage("artwork/gfx/UI/inGame/UIHealth.png")
+    self.uiShield = {
+        love.graphics.newImage("artwork/gfx/UI/inGame/UIShield1.png"),
+        love.graphics.newImage("artwork/gfx/UI/inGame/UIShield2.png"),
+        love.graphics.newImage("artwork/gfx/UI/inGame/UIShield3.png")
+    }
 end
 
 function GameManager:update(dt)
     
-    self:spawnE(dt) --Função para spawnar um inimigo
-    self:spawnB(dt) --Função para spawnar um buff
+    self:doWave(dt)
     self.player[1]:update(dt) 
     for n,enem in ipairs(self.enemies) do
         enem:update(dt)
@@ -30,23 +51,6 @@ function GameManager:update(dt)
     
 end
 
-function GameManager:draw()
-    self.player[1]:draw()
-    for n,enem in ipairs(self.enemies) do --Desenha todos os inimigos dentro da table enemies
-        enem:draw()
-    end
-    
-    for n,buffs in ipairs(self.buff) do --Desenha todos os buffs presentes na table buff
-        buffs:draw()
-    end
-
-    --Desenho do painel lateral--
-    love.graphics.setColor(0.3,0.3,0.3)
-    love.graphics.rectangle("fill",0,0,700*wScale,1200*wScale)
-    love.graphics.setColor(1,1,1)
-    love.graphics.print("NAVINHA",120*wScale,100*wScale,0,4,4)
-end
-
 function GameManager:collide(a, b)
     --função recebe duas table, e confere se cada elemento de cada table esta colidindo ou não
     for n,blt in ipairs(a) do
@@ -57,16 +61,27 @@ function GameManager:collide(a, b)
                 local a_right = enem.x + enem.width +10
                 local a_bottom = enem.y + enem.height + 10
                 if a_left<blt.x and a_right>blt.x and a_top<blt.y and a_bottom>blt.y then
-                    table.remove(self.enemies,m)
+                    if not (a == self.player[1].bullet) then
+                         table.remove(self.enemies,m)
+                         self.player[1].health = self.player[1].health - 1
+                    end
                     if a ==  self.player[1].bullet then
                         table.remove(self.player[1].bullet,n)
+                        table.remove(self.enemies,m)
                     end
                 end
             elseif b == self.buff then -- caso a colisao seja entre player e buff
                 if enem.x-10 < blt.x and enem.x+10 > blt.x and enem.y-10 < blt.y and enem.y+10 > blt.y then
-                    if enem.tipo == "speed" then
-                        self.player[1].buffSpeed = self.player[1].buffSpeed + 1 
-                    end
+                    if enem.tipo == "power" then self.player[1].buffDmg = self.player[1].buffDmg + 0.6              end
+                    if enem.tipo == "speed" then self.player[1].buffSpeed = self.player[1].buffSpeed + (0.5*wScale) end
+                    if enem.tipo == "fRate" then self.player[1].buffFireRate = self.player[1].buffFireRate - 0.8    end
+                    
+                    if enem.tipo == "gPower" then self.player[1].buffDmg = self.player[1].buffDmg + 1.3               end
+                    if enem.tipo == "gSpeed" then self.player[1].buffSpeed = self.player[1].buffSpeed + (0.01*wScale) end
+                    if enem.tipo == "gFRate" then self.player[1].buffFireRate = self.player[1].buffFireRate - 1.6     end
+                    
+                    if enem.tipo == "3x" then self.spread = 3 end
+                    if enem.tipo == "5x" then self.spread = 5 end
                     table.remove(self.buff,m)
                 end
             end
@@ -77,13 +92,14 @@ function GameManager:collide(a, b)
     --print(type(b))
 end
 
-function GameManager:spawnE(dt)
+function GameManager:spawnE(dt,curWave)
     
     if self.spawnTimerE == 0 then
-        if love.keyboard.isDown('r') then
-            table.insert(self.enemies,DefaultE())
-            self.spawnTimerE = 3
-        end
+        table.insert(self.enemies,curWave[self.enemyIndex])
+        self.spawnTimerE = self.waveTimer
+        table.remove(curWave[self.enemyIndex])
+        self.enemyIndex = self.enemyIndex + 1
+    
     end
 
     if self.spawnTimerE > 0 then
@@ -95,12 +111,20 @@ function GameManager:spawnE(dt)
 end
 
 function GameManager:spawnB(dt)
-    
+    whichBuff = math.random(0,400)
     if self.spawnTimerB == 0 then
-        if love.keyboard.isDown('e') then
-            table.insert(self.buff,Buff('speed', 30, 100, 0))
-            self.spawnTimerB = 3
-        end
+            if whichBuff < 75                       then buff = "power" end
+            if whichBuff >= 75 and whichBuff < 150  then buff = "speed" end
+            if whichBuff >= 150 and whichBuff < 225 then buff = "fRate" end              
+            if whichBuff >= 225 and whichBuff < 300 then buff = "3x" end
+
+            if whichBuff >= 300 and whichBuff < 325 then buff = "gPower" end
+            if whichBuff >= 325 and whichBuff < 350 then buff = "gSpeed" end
+            if whichBuff >= 350 and whichBuff < 375 then buff = "gFRate" end
+            if whichBuff >= 375 and whichBuff < 400 then buff = "5x" end
+                
+            table.insert(self.buff,Buff(buff))
+            self.spawnTimerB = 4
     end
 
     if self.spawnTimerB > 0 then
@@ -109,4 +133,32 @@ function GameManager:spawnB(dt)
             self.spawnTimerB = 0
         end
     end
+end
+
+function GameManager:doWave(dt)
+    if not (self.wave1[8] == nil)  then
+        self.waveTimer = 30
+        self:spawnE(dt,self.wave1)
+        self:spawnB(dt)
+    end
+end
+
+
+function GameManager:draw()
+    self.player[1]:draw()
+    for n,enem in ipairs(self.enemies) do --Desenha todos os inimigos dentro da table enemies
+        enem:draw()
+    end
+    
+    for n,buffs in ipairs(self.buff) do --Desenha todos os buffs presentes na table buff
+        buffs:draw()
+    end
+
+
+    love.graphics.draw(self.bg,0,0,0,1*wScale,1*wScale)
+    love.graphics.draw(self.logo,10*wScale,13*wScale,0,1*wScale,1*wScale)
+    for i=1,self.player[1].health do
+        love.graphics.draw(self.uiHP,24*wScale + (28*wScale*(i-1)),116*wScale,0,1*wScale,1*wScale)
+    end
+    love.graphics.print(self.player[1].health,0,0,0,wScale,wScale)
 end

@@ -8,8 +8,8 @@ function Nave:new(size)
     self.height = size*wScale
     ---------------------
 
-    self.health = 10
-    self.speed = 300*wScale
+    self.health = 5
+    self.speed = 50*wScale
     self.shootDamage = 1
 
 end

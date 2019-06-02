@@ -20,7 +20,6 @@ function love.load()
 
 
     gm =  GameManager()
-    --gm:load()
 end
 
 

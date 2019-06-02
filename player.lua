@@ -2,14 +2,14 @@ Player = Nave:extend()
 
 
 function Player:new()
-    Player.super.new(self,50)
+    Player.super.new(self,25)
     --==GAMEPLAY==--
     --Velocidade e força do tiro
     self.shootRate = 3
     self.shootTimer = 0
 
     --Buffs da rotação---
-    self.buffSpeed    = 1
+    self.buffSpeed    = wScale
     self.buffDmg      = 1
     self.buffFireRate = 1
     ---------------------
@@ -26,7 +26,7 @@ function Player:new()
 
     self.image = love.graphics.newImage("artwork/gfx/naves/player.png")
     self.g = anim.newGrid(25,32,self.image:getWidth(), self.image:getHeight())
-    self.idle = anim.newAnimation(self.g('1-2',1), 0.1)
+    self.idle = anim.newAnimation(self.g('1-2',1), 0.01)
 
     --Atributos do player
     
@@ -53,8 +53,8 @@ function Player:movement(dt)
     if self.x + self.width > love.graphics.getWidth() then
         self.x = love.graphics.getWidth() - self.width
     end
-    if self.x < 700*wScale then
-        self.x = 700*wScale
+    if self.x < 187*wScale then
+        self.x = 187*wScale
     end
     if self.y + self.height > love.graphics.getHeight() then
         self.y = love.graphics.getHeight() - self.height
@@ -107,9 +107,11 @@ function Player:update(dt)
 end
 
 function Player:draw()  
-    --um triangulo mega placeholder
-    love.graphics.polygon("line",self.x,    self.y+self.height,  self.x+(self.width/2),  self.y,   self.x+self.width,self.y+self.height)
-    self.idle:draw(self.image,self.x,self.y,0,3*wScale,3*wScale,0,5*wScale)
+    --quadrado da colisao
+    love.graphics.rectangle('line',self.x,self.y,self.width,self.height)
+    -------------------------------
+    self.idle:draw(self.image,self.x,self.y,0,wScale,wScale)
+
     for i, blt in pairs(self.bullet) do
         blt:draw() --desenhar cada bala instanciada
     end

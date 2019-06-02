@@ -1,32 +1,34 @@
 Buff = Object:extend()
 
-function Buff:new(tipo, valor, x, y)
+function Buff:new(tipo)
     self.tipo = tipo
-    self.valor = valor
-    self.x = x * wScale + 700 * wScale
-    self.y = y * wScale
+    self.width = 18*wScale
+    self.height = 10*wScale
+    self.x = math.random(187*wScale,love.graphics.getWidth())
+    self.y = 0
 
     --Define qual tipo de imagem de buff vai usar
-    if self.tipo == "power" then
-        self.image = love.graphics.newImage("artwork/gfx/UI/inGame/Pw-Sheet.png")
-    elseif self.tipo == "speed" then
-        self.image = love.graphics.newImage("artwork/gfx/UI/inGame/Sp-Sheet.png")
-    elseif self.tipo == "fireRate" then
-        self.image = love.graphics.newImage("artwork/gfx/UI/inGame/Fr-Sheet.png")
-    end
+    if self.tipo == "power" then self.image = love.graphics.newImage("artwork/gfx/UI/inGame/Pw-Sheet.png") end
+    if self.tipo == "speed" then self.image = love.graphics.newImage("artwork/gfx/UI/inGame/Sp-Sheet.png") end
+    if self.tipo == "fRate" then self.image = love.graphics.newImage("artwork/gfx/UI/inGame/Fr-Sheet.png") end
+
+    if self.tipo == "gPower" then self.image = love.graphics.newImage("artwork/gfx/UI/inGame/PwGold-Sheet.png") end
+    if self.tipo == "gSpeed" then self.image = love.graphics.newImage("artwork/gfx/UI/inGame/SpGold-Sheet.png") end
+    if self.tipo == "gFRate" then self.image = love.graphics.newImage("artwork/gfx/UI/inGame/FrGold-Sheet.png") end
+    
+    if self.tipo == "3x" then self.image = love.graphics.newImage("artwork/gfx/UI/inGame/3x-Sheet.png") end
+    if self.tipo == "5x" then self.image = love.graphics.newImage("artwork/gfx/UI/inGame/5x-Sheet.png") end
     
     self.g = anim.newGrid(18,10,self.image:getWidth(), self.image:getHeight())
-    self.idle = anim.newAnimation(self.g('1-2',1), 0.1)
+    self.idle = anim.newAnimation(self.g('1-6',1), 0.1)
 
 end
 
 function Buff:update(dt)
-    self.y = self.y + 100 * wScale * dt;
+    self.y = self.y + 50 * wScale * dt;
+    self.idle:update(dt)
 end
 
 function Buff:draw()
-    --[[love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("line", self.x, self.y, 10 * wScale, 10 * wScale)
-    love.graphics.setColor(0, 0, 0)]]--
-    self.idle:draw(self.image,self.x,self.y,0,3*wScale,3*wScale,0,5*wScale)
+    self.idle:draw(self.image,self.x,self.y,0,1*wScale,1*wScale)
 end
