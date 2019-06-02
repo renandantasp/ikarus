@@ -9,9 +9,9 @@ function Player:new()
     self.shootTimer = 0
 
     --Buffs da rotação---
-    self.buffSpeed    = 0
-    self.buffDmg      = 0
-    self.buffFireRate = 0
+    self.buffSpeed    = 1
+    self.buffDmg      = 1
+    self.buffFireRate = 1
     ---------------------
 
     --Buffs---------
@@ -36,16 +36,16 @@ end
 function Player:movement(dt)
    --Movimentação
     if love.keyboard.isDown('up') then
-        self.y = self.y - (self.speed * dt)
+        self.y = self.y - (self.speed * dt)*self.buffSpeed
     end
     if love.keyboard.isDown('down') then
-        self.y = self.y + (self.speed * dt)
+        self.y = self.y + (self.speed * dt)*self.buffSpeed
     end
     if love.keyboard.isDown('left') then
-        self.x = self.x - (self.speed * dt)
+        self.x = self.x - (self.speed * dt)*self.buffSpeed
     end
     if love.keyboard.isDown('right') then
-        self.x = self.x + (self.speed * dt)
+        self.x = self.x + (self.speed * dt)*self.buffSpeed
     end
    --
 
@@ -108,7 +108,7 @@ end
 
 function Player:draw()  
     --um triangulo mega placeholder
-    --love.graphics.polygon("line",self.x,    self.y+self.height,  self.x+(self.width/2),  self.y,   self.x+self.width,self.y+self.height)
+    love.graphics.polygon("line",self.x,    self.y+self.height,  self.x+(self.width/2),  self.y,   self.x+self.width,self.y+self.height)
     self.idle:draw(self.image,self.x,self.y,0,3*wScale,3*wScale,0,5*wScale)
     for i, blt in pairs(self.bullet) do
         blt:draw() --desenhar cada bala instanciada

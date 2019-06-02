@@ -8,7 +8,7 @@ function DefaultE:new()
     self.shootTimer = 0
     self.bullet  = {}
     self.path = Path(self,fx,fy)
-    self.speed = math.random(180,320)
+    self.speed = math.random(100,200)
     
 end
 
