@@ -4,6 +4,7 @@ Player = Nave:extend()
 function Player:new()
     Player.super.new(self,25)
     --==GAMEPLAY==--
+    self.health = 5
     --Velocidade e força do tiro
     self.shootRate = 3
     self.shootTimer = 0

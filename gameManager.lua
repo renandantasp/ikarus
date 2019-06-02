@@ -61,13 +61,18 @@ function GameManager:collide(a, b)
                 local a_right = enem.x + enem.width +10
                 local a_bottom = enem.y + enem.height + 10
                 if a_left<blt.x and a_right>blt.x and a_top<blt.y and a_bottom>blt.y then
-                    if not (a == self.player[1].bullet) then
+                    if not (a == self.player[1].bullet) then -- se colidir player com inimigo
                          table.remove(self.enemies,m)
                          self.player[1].health = self.player[1].health - 1
                     end
-                    if a ==  self.player[1].bullet then
+                    if a ==  self.player[1].bullet then -- se colidir o tiro com o inimigo
+                        enem.health = enem.health - self.player[1].buffDmg
+                        enem.onHit = true
+                        if enem.health<=0 then
+                            table.remove(self.enemies,m)
+                        end
                         table.remove(self.player[1].bullet,n)
-                        table.remove(self.enemies,m)
+                        
                     end
                 end
             elseif b == self.buff then -- caso a colisao seja entre player e buff
