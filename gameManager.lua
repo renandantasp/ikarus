@@ -79,7 +79,12 @@ function GameManager:collide(a, b)
                     if not (a == self.player[1].bullet) then -- se colidir player com inimigo
                         love.audio.play(sfxHurt)
                         table.remove(self.enemies,m)
-                         self.player[1].health = self.player[1].health - 1
+                        if self.player[1].shield > 0 then
+                           self.player[1].shield = self.player[1].shield - 1
+                        else
+                            self.player[1].health = self.player[1].health - 1
+                        end
+                        
                     end
                     if a ==  self.player[1].bullet then -- se colidir o tiro com o inimigo
                         love.audio.play(sfxHurt)
@@ -156,7 +161,7 @@ function GameManager:spawnB(dt)
             if whichBuff == 16 then buff = "gFRate" end
             if whichBuff == 17 then buff = "5x" end
                 
-            table.insert(self.buff,Buff(buff))
+            table.insert(self.buff,Buff("shield"))
             self.spawnTimerB = self.waveTimer
     end
 
@@ -190,11 +195,10 @@ function GameManager:draw()
         buffs:draw()
     end
 
-    
-
 
     love.graphics.draw(self.bg,0,0,0,1*wScale,1*wScale)
     love.graphics.draw(self.logo,10*wScale,13*wScale,0,1*wScale,1*wScale)
+
     for i=1,self.player[1].health do
         love.graphics.draw(self.uiHP,24*wScale + (28*wScale*(i-1)),116*wScale,0,1*wScale,1*wScale)
     end
@@ -204,15 +208,18 @@ function GameManager:draw()
     end
     
     for n,buff in ipairs(self.player[1].buffVec) do --Desenha todos os buffs de spread e shield
-        if n == 1 then
+        if n == 2 then
             buff:draw(141*wScale,211*wScale)
         end
-            for i=0,self.player[1].shield do
-                buff:draw((57 + 25*(i-1)) * wScale,100*wScale)
-                love.graphics.print(self.player[1].shield,0,(80*i)*wScale,0,wScale,wScale)
-            end
+        
+        love.graphics.print(self.player[1].shield,0,80*wScale,0,wScale,wScale)
+        for i=1,self.player[1].shield do
+            buff:draw((55 + 25*(i-1)) * wScale,149*wScale)
+            love.graphics.print("aaaaaa",0,80,0,wScale,wScale)
+        end
+        
     end
-    love.graphics.print(self.player[1].shield,0,80,0,wScale,wScale)
+    
     --]]
  
 end

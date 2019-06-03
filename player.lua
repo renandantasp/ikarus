@@ -33,7 +33,7 @@ function Player:new()
     --Tables----------
     self.bullet  = {}
     self.buffRot = {}
-    self.buffVec = {}
+    self.buffVec = {Buff("shield",true),nil}
     ------------------
 
     self.image = love.graphics.newImage("artwork/gfx/naves/player.png")
@@ -103,17 +103,17 @@ function Player:updateBuff(tipo)
     end
     --Buffs de spread 
     if tipo == "3x" then 
-        self.buffVec[1] = Buff(tipo,true)
+        self.buffVec[2] = Buff(tipo,true)
         self.spread = 3 
     end
     if tipo == "5x" then 
-        self.buffVec[1] = Buff(tipo,true)
+        self.buffVec[2] = Buff(tipo,true)
         self.spread = 5 
     end
     -------------------
     --Shield
     if tipo == "shield" then 
-        self.buffVec[2] = Buff(tipo,true)
+        self.buffVec[1] = Buff(tipo,true)
         self.shield = self.shield + 1
         if self.shield > 3 then self.shield = 3 end
     end

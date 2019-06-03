@@ -2,6 +2,9 @@ cell (limpar o codigo, desenhar ele direito)
 kamikaze (tudo)
 boss (tudo oh boi)
 
+inimigos atirando
+path
+
 consertar colisão (vai salmao)
 
 shield na ui (eu arrumo)
