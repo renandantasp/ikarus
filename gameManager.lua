@@ -55,12 +55,13 @@ function GameManager:collide(a, b)
     --função recebe duas table, e confere se cada elemento de cada table esta colidindo ou não
     for n,blt in ipairs(a) do
         for m, enem in ipairs(b) do
-            local a_left = enem.x-10
-            local a_top = enem.y-10
+            local a_left = enem.x
+            local a_top = enem.y
             if b == self.enemies or a ==  self.player[1].bullet then --caso a colisão seja entre inimigos e balas ou inimigos e player
-                local a_right = enem.x + enem.width +10
-                local a_bottom = enem.y + enem.height + 10
+                local a_right = enem.x + enem.width
+                local a_bottom = enem.y + enem.height
                 if a_left<blt.x and a_right>blt.x and a_top<blt.y and a_bottom>blt.y then
+                    
                     if not (a == self.player[1].bullet) then -- se colidir player com inimigo
                          table.remove(self.enemies,m)
                          self.player[1].health = self.player[1].health - 1
@@ -76,7 +77,9 @@ function GameManager:collide(a, b)
                     end
                 end
             elseif b == self.buff then -- caso a colisao seja entre player e buff
-                if enem.x-10 < blt.x and enem.x+10 > blt.x and enem.y-10 < blt.y and enem.y+10 > blt.y then
+                local a_right = enem.x + enem.width
+                local a_bottom = enem.y + enem.height
+                if a_left<blt.x and a_right>blt.x and a_top<blt.y and a_bottom>blt.y then
                     if enem.tipo == "power" then self.player[1].buffDmg = self.player[1].buffDmg + 0.6              end
                     if enem.tipo == "speed" then self.player[1].buffSpeed = self.player[1].buffSpeed + (0.5*wScale) end
                     if enem.tipo == "fRate" then self.player[1].buffFireRate = self.player[1].buffFireRate - 0.8    end

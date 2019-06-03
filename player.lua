@@ -12,7 +12,7 @@ function Player:new()
     --Buffs da rotação---
     self.buffSpeed    = wScale
     self.buffDmg      = 1
-    self.buffFireRate = 1
+    self.buffFireRate = 3
     ---------------------
 
     --Buffs---------
@@ -67,7 +67,7 @@ function Player:movement(dt)
 end
 
 function Player:shoot()
-    self.shootTimer = self.shootRate --reinicia o timer do fire rate
+    self.shootTimer = self.buffFireRate --reinicia o timer do fire rate
     table.insert(self.bullet,Bullet(self)) -- instancia mais uma bala na table
     
 end
