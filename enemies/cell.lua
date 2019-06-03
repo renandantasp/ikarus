@@ -8,7 +8,7 @@ function Cell:new(ger,x,y)
     self.shootRate = 6
     self.shootTimer = 0
     self.bullet  = {}
-    self.path = Path(self,fx,fy)
+    --self.path = Path(self,fx,fy)
     self.speed = love.math.random(50,100)
     self.onHit = false
     self.health = (2*self.geracao) - 1

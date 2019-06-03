@@ -1,4 +1,4 @@
-cell (limpar o codigo, desenhar ele direito)
+cell (limpar o codigo)
 kamikaze (tudo)
 boss (tudo oh boi)
 
@@ -7,8 +7,7 @@ path
 
 consertar colisão (vai salmao)
 
-shield na ui (eu arrumo)
-shield defender (eu arrumo)
+
 
 morte
 pause

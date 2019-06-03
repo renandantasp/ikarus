@@ -1,13 +1,15 @@
 Path = Object:extend()
 
-function Path:new(enemy,fx,fy)
-    self.x = enemy.x
-    self.y = enemy.y
-    self.fx = PathLib(fx)
-    self.fx = PathLib(fy)
+function Path:new(enemy,fx)
+    self.enemy = enemy
+    self.x = self.enemy.x
+    self.y = self.enemy.y
+    --self.pos{self.x,self.y}
+    self.fx = PathLib(self.enemy,fx)
 end
 
 function Path:update(dt)
-    self.x = 0 --alguma coisa envolvendo o self.fx
-    self.y = 0 --alguma coisa envolvendo o self.fy
+    self.fx:update(dt)
+    self.x = self.fx.x --alguma coisa envolvendo o self.fx
+    self.y = self.fx.y --alguma coisa envolvendo o self.fy
 end

@@ -20,7 +20,7 @@ function GameManager:new()
         DefaultE("red"),DefaultE("yellow"),
         DefaultE("green"),DefaultE("yellow"),
         DefaultE("purple"),DefaultE("red"),
-        DefaultE("purple"),Cell()
+        DefaultE("purple"),DefaultE("red")
     }
     self.wave2 = {}
     self.wave3 = {}
@@ -161,7 +161,7 @@ function GameManager:spawnB(dt)
             if whichBuff == 16 then buff = "gFRate" end
             if whichBuff == 17 then buff = "5x" end
                 
-            table.insert(self.buff,Buff("shield"))
+            table.insert(self.buff,Buff(buff))
             self.spawnTimerB = self.waveTimer
     end
 
@@ -212,10 +212,10 @@ function GameManager:draw()
             buff:draw(141*wScale,211*wScale)
         end
         
-        love.graphics.print(self.player[1].shield,0,80*wScale,0,wScale,wScale)
-        for i=1,self.player[1].shield do
-            buff:draw((55 + 25*(i-1)) * wScale,149*wScale)
-            love.graphics.print("aaaaaa",0,80,0,wScale,wScale)
+        if n == 1 then
+            for i=1,self.player[1].shield do
+                buff:draw((55 + 25*(i-1)) * wScale,149*wScale)
+            end
         end
         
     end

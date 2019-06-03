@@ -7,6 +7,7 @@ function Bullet:new(pl,spread,pos)
     self.speed = 750
     self.spread = spread or 0
     self.pos = pos
+    self.rot = 0
     self.blt = love.graphics.newImage("artwork/gfx/naves/blt.png")
 end
 

@@ -7,8 +7,8 @@ function DefaultE:new(cor)
     self.shootRate = 6
     self.shootTimer = 0
     self.bullet  = {}
-    self.path = Path(self,fx,fy)
-    self.speed = math.random(100,200)
+    self.speed = 0.3
+    self.path = Path(self,"senx")
     self.onHit = false
     self.deathTimer = 0
     
@@ -22,25 +22,29 @@ function DefaultE:new(cor)
     self.idle = anim.newAnimation(self.g('1-2',1), 0.01)
 end
 
-function DefaultE:draw()
-    --love.graphics.rectangle("fill",self.x,self.y,self.width,self.height)
-    self.idle:draw(self.image, self.x,self.y,0,wScale,wScale,nil,3*wScale)
-    if self.onHit == true then
-        love.graphics.draw(self.imgOnHit, self.x,self.y,0,wScale,wScale,nil,3*wScale)
-        
-    end
-end
 
 function DefaultE:destroy()
     self.deathTimer = 0
 end
 
 function DefaultE:update(dt)
-    self.y = self.y + (self.speed * dt)
+    self.path:update(dt)
+    self.x = (self.path.x)
+    self.y = (self.path.y)
+
     self.idle:update(dt)
     self.onHit = false
+    
 
 end
 
 
+function DefaultE:draw()
+    --love.graphics.rectangle("fill",self.x,self.y,self.width,self.height)
+    self.idle:draw(self.image, self.x,self.y,0,wScale,wScale,nil,3*wScale)
+    if self.onHit == true then
+        love.graphics.draw(self.imgOnHit, self.x,self.y,0,wScale,wScale,nil,3*wScale)
+    end
 
+    love.graphics.print(self.speed,300*wScale,0,0,wScale,wScale)
+end
