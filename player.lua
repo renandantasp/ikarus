@@ -17,7 +17,7 @@ function Player:new()
 
     --Buffs---------
     self.shield = 0
-    self.spread = 0
+    self.spread = 5
     ----------------
     
     --Bullet----------
@@ -64,6 +64,10 @@ function Player:movement(dt)
         self.y = 0
     end
    --
+end
+
+function Player:updateBuff()
+
 end
 
 function Player:shoot()

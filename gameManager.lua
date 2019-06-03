@@ -6,8 +6,9 @@ function GameManager:new()
     self.enemies = {}
     self.spawnTimerE = 3
     self.spawnTimerB = 4
-    self.enemyIndex = 1
+    self.enemyIndex = 0
 
+    self.wave1size = 8
     self.wave1 = {
         DefaultE("red"),DefaultE("yellow"),
         DefaultE("green"),DefaultE("yellow"),
@@ -105,8 +106,8 @@ function GameManager:spawnE(dt,curWave)
     if self.spawnTimerE == 0 then
         table.insert(self.enemies,curWave[self.enemyIndex])
         self.spawnTimerE = self.waveTimer
-        table.remove(curWave[self.enemyIndex])
-        self.enemyIndex = self.enemyIndex + 1
+        table.remove(curWave)
+        self.enemyIndex = self.enemyIndex - 1
     
     end
 
@@ -132,7 +133,7 @@ function GameManager:spawnB(dt)
             if whichBuff >= 375 and whichBuff < 400 then buff = "5x" end
                 
             table.insert(self.buff,Buff(buff))
-            self.spawnTimerB = 4
+            self.spawnTimerB = self.waveTimer
     end
 
     if self.spawnTimerB > 0 then
@@ -144,7 +145,10 @@ function GameManager:spawnB(dt)
 end
 
 function GameManager:doWave(dt)
-    if not (self.wave1[8] == nil)  then
+    if not (next(self.wave1) == nil)  then
+        if self.enemyIndex == 0 then
+            self.enemyIndex = self.wave1size
+        end
         self.waveTimer = 30
         self:spawnE(dt,self.wave1)
         self:spawnB(dt)
@@ -168,5 +172,5 @@ function GameManager:draw()
     for i=1,self.player[1].health do
         love.graphics.draw(self.uiHP,24*wScale + (28*wScale*(i-1)),116*wScale,0,1*wScale,1*wScale)
     end
-    love.graphics.print(self.player[1].health,0,0,0,wScale,wScale)
+    love.graphics.print(self.enemyIndex,0,0,0,wScale,wScale)
 end
