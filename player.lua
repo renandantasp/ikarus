@@ -22,7 +22,11 @@ function Player:new()
     self.buffFireRate = 3
     ---------------------
 
-   
+    -----===SFX-----
+    sfxHurt = love.audio.newSource("artwork/sfx/hurt.wav","static")
+    sfxPowerUp = love.audio.newSource("artwork/sfx/powerup.wav","static")
+    sfxExpl = love.audio.newSource("artwork/sfx/explosion.wav","static")
+    sfxShoot = love.audio.newSource("artwork/sfx/shoot.wav","static")
 
     
     
@@ -74,6 +78,7 @@ function Player:movement(dt)
 end
 
 function Player:updateBuff(tipo)
+    love.audio.play(sfxPowerUp)
     if tipo ~= "3x" and tipo ~= "5x" and tipo ~= "shield" then
         self.buffRot[(self.buffIndex%3)+1] = Buff(tipo,true)
         self.buffIndex = self.buffIndex + 1
@@ -105,6 +110,13 @@ function Player:updateBuff(tipo)
         self.buffVec[1] = Buff(tipo,true)
         self.spread = 5 
     end
+    -------------------
+    --Shield
+    if tipo == "shield" then 
+        self.buffVec[2] = Buff(tipo,true)
+        self.shield = self.shield + 1
+        if self.shield > 3 then self.shield = 3 end
+    end
 end
     
 
@@ -128,14 +140,12 @@ end
 
 function Player:update(dt)
     self:movement(dt)
-    
-
-    
     self.idle:update(dt)
 
     if love.keyboard.isDown('z') then
             if self.shootTimer <= 0 then --se o timer estiver zerado, poderá chamar shoot()
                 self:shoot()
+                love.audio.play(sfxShoot)
             end
     end
     

@@ -19,8 +19,15 @@ function Buff:new(tipo,ui)
     
     if self.tipo == "3x" then self.image = love.graphics.newImage("artwork/gfx/UI/inGame/3x-Sheet.png") end
     if self.tipo == "5x" then self.image = love.graphics.newImage("artwork/gfx/UI/inGame/5x-Sheet.png") end
+
+    if self.tipo == "shield" then 
+        self.image = love.graphics.newImage("artwork/gfx/UI/inGame/shield-Sheet.png") 
+        self.g = anim.newGrid(23,27,self.image:getWidth(), self.image:getHeight())
+    end
+    if self.tipo ~= "shield" then
+        self.g = anim.newGrid(18,10,self.image:getWidth(), self.image:getHeight())
+    end
     
-    self.g = anim.newGrid(18,10,self.image:getWidth(), self.image:getHeight())
     self.idle = anim.newAnimation(self.g('1-6',1), 0.08)
 
 end

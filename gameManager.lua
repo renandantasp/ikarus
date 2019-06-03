@@ -73,14 +73,17 @@ function GameManager:collide(a, b)
                 if a_left<blt.x and a_right>blt.x and a_top<blt.y and a_bottom>blt.y then
                     
                     if not (a == self.player[1].bullet) then -- se colidir player com inimigo
-                         table.remove(self.enemies,m)
+                        love.audio.play(sfxHurt)
+                        table.remove(self.enemies,m)
                          self.player[1].health = self.player[1].health - 1
                     end
                     if a ==  self.player[1].bullet then -- se colidir o tiro com o inimigo
+                        love.audio.play(sfxHurt)
                         enem.health = enem.health - self.player[1].buffDmg
                         enem.onHit = true
                         if enem.health<=0 then
                             table.remove(self.enemies,m)
+                            love.audio.play(sfxExpl)
                         end
                         table.remove(self.player[1].bullet,n)
                         
@@ -121,18 +124,21 @@ end
 
 function GameManager:spawnB(dt)
     if self.spawnTimerB == 0 then
-            whichBuff = love.math.random(0,400)
-            if whichBuff < 75                       then buff = "power" end
-            if whichBuff >= 75 and whichBuff < 150  then buff = "speed" end
-            if whichBuff >= 150 and whichBuff < 225 then buff = "fRate" end              
-            if whichBuff >= 225 and whichBuff < 300 then buff = "3x" end
+            whichBuff = love.math.random(0,17)
+            if whichBuff <= 2                       then buff = "power" end
+            if whichBuff >= 3 and whichBuff <= 5  then buff = "speed" end
+            if whichBuff >= 6 and whichBuff <= 8 then buff = "fRate" end              
+            if whichBuff >= 9 and whichBuff <= 11 then buff = "3x" end
 
-            if whichBuff >= 300 and whichBuff < 325 then buff = "gPower" end
-            if whichBuff >= 325 and whichBuff < 350 then buff = "gSpeed" end
-            if whichBuff >= 350 and whichBuff < 375 then buff = "gFRate" end
-            if whichBuff >= 375 and whichBuff < 400 then buff = "5x" end
+            if whichBuff >= 12 and whichBuff <= 13 then buff = "shield" end
+
+
+            if whichBuff == 14 then buff = "gPower" end
+            if whichBuff == 15 then buff = "gSpeed" end
+            if whichBuff == 16 then buff = "gFRate" end
+            if whichBuff == 17 then buff = "5x" end
                 
-            table.insert(self.buff,Buff(buff))
+            table.insert(self.buff,Buff("shield"))
             self.spawnTimerB = self.waveTimer
     end
 
@@ -179,12 +185,16 @@ function GameManager:draw()
         buff:draw((57 + 25*(n-1)) *wScale,210*wScale)
     end
     
-    for n,buff in ipairs(self.player[1].buffVec) do --Desenha todos os buffs presentes na table buff
+    for n,buff in ipairs(self.player[1].buffVec) do --Desenha todos os buffs de spread e shield
         if n == 1 then
             buff:draw(141*wScale,211*wScale)
         end
-
+            for i=0,self.player[1].shield do
+                buff:draw((57 + 25*(i-1)) * wScale,100*wScale)
+                love.graphics.print(self.player[1].shield,0,(80*i)*wScale,0,wScale,wScale)
+            end
     end
+    love.graphics.print(self.player[1].shield,0,80,0,wScale,wScale)
     --]]
-    love.graphics.print(whichBuff,0,0,0,wScale,wScale)
+ 
 end
