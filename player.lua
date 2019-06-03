@@ -68,7 +68,19 @@ end
 
 function Player:shoot()
     self.shootTimer = self.buffFireRate --reinicia o timer do fire rate
-    table.insert(self.bullet,Bullet(self)) -- instancia mais uma bala na table
+    if self.spread == 0 then
+        table.insert(self.bullet,Bullet(self,self.spread)) -- instancia mais uma bala na table
+    end
+    if self.spread == 3 then
+        for i=1,4 do
+            table.insert(self.bullet,Bullet(self,self.spread,i)) -- instancia mais uma bala na table
+        end
+    end
+    if self.spread == 5 then
+        for i=1,6 do
+            table.insert(self.bullet,Bullet(self,self.spread,i)) -- instancia mais uma bala na table
+        end
+    end
     
 end
 

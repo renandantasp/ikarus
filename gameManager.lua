@@ -88,8 +88,8 @@ function GameManager:collide(a, b)
                     if enem.tipo == "gSpeed" then self.player[1].buffSpeed = self.player[1].buffSpeed + (0.01*wScale) end
                     if enem.tipo == "gFRate" then self.player[1].buffFireRate = self.player[1].buffFireRate - 1.6     end
                     
-                    if enem.tipo == "3x" then self.spread = 3 end
-                    if enem.tipo == "5x" then self.spread = 5 end
+                    if enem.tipo == "3x" then self.player[1].spread = 3 end
+                    if enem.tipo == "5x" then self.player[1].spread = 5 end
                     table.remove(self.buff,m)
                 end
             end
