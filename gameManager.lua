@@ -2,12 +2,15 @@ GameManager = Object:extend()
 
 function GameManager:new()
     self.buff = {}
+    self.drawBuff = {}
     self.player = {Player()}
     self.enemies = {}
-    self.spawnTimerE = 3
-    self.spawnTimerB = 4
+    self.spawnTimerE = 0
+    self.spawnTimerB = 0
     self.enemyIndex = 0
 
+
+    -----===Waves===-----
     self.wave1size = 8
     self.wave1 = {
         DefaultE("red"),DefaultE("yellow"),
@@ -18,9 +21,14 @@ function GameManager:new()
     self.wave2 = {}
     self.wave3 = {}
     self.wave4 = {}
-
-
-    --Imagens da Hud
+    ---------------------
+    
+    --fonte---
+    --font = love.graphics.newImageFont("artwork/fonte/XXX.png",  " !\"#$%&'()*+,-./0123456789:;<=>?@ÁÀÂÃABCÇDEÉÊFGHIÍJKLMNÑOÓÔPQRSTUÚVWXYZ[\\]^_`áàâãabcçdeéêfghiíjklmnñoóôpqrstuúvwxyz{|}")
+    --love.graphics.setFont(font)
+    --------
+    
+    --===Imagens da Hud===--------------
     self.bg = love.graphics.newImage("artwork/HUD.png")
     self.logo = love.graphics.newImage("artwork/J-IKARUS.png")
     self.uiHP = love.graphics.newImage("artwork/gfx/UI/inGame/UIHealth.png")
@@ -29,6 +37,7 @@ function GameManager:new()
         love.graphics.newImage("artwork/gfx/UI/inGame/UIShield2.png"),
         love.graphics.newImage("artwork/gfx/UI/inGame/UIShield3.png")
     }
+    -------------------------------------
 end
 
 function GameManager:update(dt)
@@ -81,16 +90,7 @@ function GameManager:collide(a, b)
                 local a_right = enem.x + enem.width
                 local a_bottom = enem.y + enem.height
                 if a_left<blt.x and a_right>blt.x and a_top<blt.y and a_bottom>blt.y then
-                    if enem.tipo == "power" then self.player[1].buffDmg = self.player[1].buffDmg + 0.6              end
-                    if enem.tipo == "speed" then self.player[1].buffSpeed = self.player[1].buffSpeed + (0.5*wScale) end
-                    if enem.tipo == "fRate" then self.player[1].buffFireRate = self.player[1].buffFireRate - 0.8    end
-                    
-                    if enem.tipo == "gPower" then self.player[1].buffDmg = self.player[1].buffDmg + 1.3               end
-                    if enem.tipo == "gSpeed" then self.player[1].buffSpeed = self.player[1].buffSpeed + (0.01*wScale) end
-                    if enem.tipo == "gFRate" then self.player[1].buffFireRate = self.player[1].buffFireRate - 1.6     end
-                    
-                    if enem.tipo == "3x" then self.player[1].spread = 3 end
-                    if enem.tipo == "5x" then self.player[1].spread = 5 end
+                    self.player[1]:updateBuff(enem.tipo)
                     table.remove(self.buff,m)
                 end
             end
@@ -120,8 +120,8 @@ function GameManager:spawnE(dt,curWave)
 end
 
 function GameManager:spawnB(dt)
-    whichBuff = math.random(0,400)
     if self.spawnTimerB == 0 then
+            whichBuff = love.math.random(0,400)
             if whichBuff < 75                       then buff = "power" end
             if whichBuff >= 75 and whichBuff < 150  then buff = "speed" end
             if whichBuff >= 150 and whichBuff < 225 then buff = "fRate" end              
@@ -166,11 +166,25 @@ function GameManager:draw()
         buffs:draw()
     end
 
+    
+
 
     love.graphics.draw(self.bg,0,0,0,1*wScale,1*wScale)
     love.graphics.draw(self.logo,10*wScale,13*wScale,0,1*wScale,1*wScale)
     for i=1,self.player[1].health do
         love.graphics.draw(self.uiHP,24*wScale + (28*wScale*(i-1)),116*wScale,0,1*wScale,1*wScale)
     end
-    love.graphics.print(self.enemyIndex,0,0,0,wScale,wScale)
+
+    for n,buff in ipairs(self.player[1].buffRot) do --Desenha os buffs da rotação
+        buff:draw((57 + 25*(n-1)) *wScale,210*wScale)
+    end
+    
+    for n,buff in ipairs(self.player[1].buffVec) do --Desenha todos os buffs presentes na table buff
+        if n == 1 then
+            buff:draw(141*wScale,211*wScale)
+        end
+
+    end
+    --]]
+    love.graphics.print(whichBuff,0,0,0,wScale,wScale)
 end

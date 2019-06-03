@@ -33,6 +33,8 @@ function Bullet:update(dt)
             self.rot = 1
         end
     end
+
+    
     if self.spread == 5 then
         if self.pos%5 == 0 then -- meio
             self.y = self.y - (self.speed * dt)

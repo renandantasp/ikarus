@@ -5,23 +5,30 @@ function Player:new()
     Player.super.new(self,25)
     --==GAMEPLAY==--
     self.health = 5
+    
     --Velocidade e força do tiro
-    self.shootRate = 3
+    self.fireRate = 3
     self.shootTimer = 0
 
+    --Buffs---------
+    self.buffIndex = 0
+    self.shield = 0
+    self.spread = 0
+    ----------------
+
     --Buffs da rotação---
-    self.buffSpeed    = wScale
+    self.buffSpeed    = self.speed
     self.buffDmg      = 1
     self.buffFireRate = 3
     ---------------------
 
-    --Buffs---------
-    self.shield = 0
-    self.spread = 5
-    ----------------
+   
+
     
-    --Bullet----------
+    
+    --Tables----------
     self.bullet  = {}
+    self.buffRot = {}
     self.buffVec = {}
     ------------------
 
@@ -37,16 +44,16 @@ end
 function Player:movement(dt)
    --Movimentação
     if love.keyboard.isDown('up') then
-        self.y = self.y - (self.speed * dt)*self.buffSpeed
+        self.y = self.y - (self.buffSpeed * dt)
     end
     if love.keyboard.isDown('down') then
-        self.y = self.y + (self.speed * dt)*self.buffSpeed
+        self.y = self.y + (self.buffSpeed * dt)
     end
     if love.keyboard.isDown('left') then
-        self.x = self.x - (self.speed * dt)*self.buffSpeed
+        self.x = self.x - (self.buffSpeed * dt)
     end
     if love.keyboard.isDown('right') then
-        self.x = self.x + (self.speed * dt)*self.buffSpeed
+        self.x = self.x + (self.buffSpeed * dt)
     end
    --
 
@@ -66,9 +73,40 @@ function Player:movement(dt)
    --
 end
 
-function Player:updateBuff()
+function Player:updateBuff(tipo)
+    if tipo ~= "3x" and tipo ~= "5x" and tipo ~= "shield" then
+        self.buffRot[(self.buffIndex%3)+1] = Buff(tipo,true)
+        self.buffIndex = self.buffIndex + 1
+        local i=1
+        auxBuffPw=0
+        auxBuffSp=0
+        auxBuffFr=0
+        for i, buff in ipairs(self.buffRot) do
+            --Buff normais
+            if buff.tipo == "power"  then auxBuffPw = auxBuffPw + 0.6           end
+            if buff.tipo == "speed"  then auxBuffSp = auxBuffSp + (0.5*wScale)  end
+            if buff.tipo == "fRate"  then auxBuffFr = auxBuffFr + 0.8           end
 
+            --Buffs Dourados
+            if buff.tipo == "gPower" then auxBuffPw = auxBuffPw + 1.3           end
+            if buff.tipo == "gSpeed" then auxBuffSp = auxBuffSp + (0.01*wScale) end
+            if buff.tipo == "gFRate" then auxBuffFr = auxBuffFr + 1             end
+        end
+        self.buffDmg = self.shootDamage + auxBuffPw
+        self.buffSpeed = self.speed + auxBuffSp
+        self.buffFireRate = self.fireRate - auxBuffFr    
+    end
+    --Buffs de spread 
+    if tipo == "3x" then 
+        self.buffVec[1] = Buff(tipo,true)
+        self.spread = 3 
+    end
+    if tipo == "5x" then 
+        self.buffVec[1] = Buff(tipo,true)
+        self.spread = 5 
+    end
 end
+    
 
 function Player:shoot()
     self.shootTimer = self.buffFireRate --reinicia o timer do fire rate
@@ -77,12 +115,12 @@ function Player:shoot()
     end
     if self.spread == 3 then
         for i=1,4 do
-            table.insert(self.bullet,Bullet(self,self.spread,i)) -- instancia mais uma bala na table
+            table.insert(self.bullet,Bullet(self,self.spread,i)) -- instancia as 3 balas na table
         end
     end
     if self.spread == 5 then
         for i=1,6 do
-            table.insert(self.bullet,Bullet(self,self.spread,i)) -- instancia mais uma bala na table
+            table.insert(self.bullet,Bullet(self,self.spread,i)) -- instancia as 5 balasz na table
         end
     end
     
