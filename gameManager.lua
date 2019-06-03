@@ -11,12 +11,16 @@ function GameManager:new()
 
 
     -----===Waves===-----
-    self.wave1size = 8
+    self.wave1size = 16
     self.wave1 = {
+        Cell(),DefaultE("yellow"),
+        DefaultE("green"),DefaultE("yellow"),
+        DefaultE("purple"),DefaultE("red"),
+        DefaultE("purple"),DefaultE("green"),
         DefaultE("red"),DefaultE("yellow"),
         DefaultE("green"),DefaultE("yellow"),
         DefaultE("purple"),DefaultE("red"),
-        DefaultE("purple"),DefaultE("green")
+        DefaultE("purple"),Cell()
     }
     self.wave2 = {}
     self.wave3 = {}
@@ -82,8 +86,22 @@ function GameManager:collide(a, b)
                         enem.health = enem.health - self.player[1].buffDmg
                         enem.onHit = true
                         if enem.health<=0 then
+                            if enem.geracao ~= nil then
+                                if enem.geracao == 3 then   
+                                    table.insert(self.enemies,Cell(2, enem.x+(8*enem.geracao*wScale), enem.y+(3*wScale)))
+                                    table.insert(self.enemies,Cell(2, enem.x+(-8*enem.geracao*wScale), enem.y+(3*wScale)))
+                                end
+                                if enem.geracao == 2 then
+                                    table.insert(self.enemies,Cell(1, enem.x+(8*enem.geracao*wScale), enem.y+(3*wScale)))
+                                    table.insert(self.enemies,Cell(1, enem.x+(-8*enem.geracao*wScale), enem.y+(3*wScale)))
+                                end
+                            end
+                            
                             table.remove(self.enemies,m)
+                            
                             love.audio.play(sfxExpl)
+
+
                         end
                         table.remove(self.player[1].bullet,n)
                         
@@ -138,7 +156,7 @@ function GameManager:spawnB(dt)
             if whichBuff == 16 then buff = "gFRate" end
             if whichBuff == 17 then buff = "5x" end
                 
-            table.insert(self.buff,Buff("shield"))
+            table.insert(self.buff,Buff(buff))
             self.spawnTimerB = self.waveTimer
     end
 

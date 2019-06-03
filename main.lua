@@ -13,6 +13,7 @@ function love.load()
     require "buff"
     require "player"
     require "enemies.default"
+    require "enemies.cell"
     require "uiManager"
     require "menu"
     require "gameManager"

@@ -2,7 +2,7 @@ DefaultE = Nave:extend()
 
 function DefaultE:new(cor)
     DefaultE.super.new(self,25)
-    self.x = math.random(187*wScale,love.graphics.getWidth()-self.width)
+    self.x = love.math.random(187*wScale,love.graphics.getWidth()-self.width)
     self.y = 0
     self.shootRate = 6
     self.shootTimer = 0
@@ -10,6 +10,7 @@ function DefaultE:new(cor)
     self.path = Path(self,fx,fy)
     self.speed = math.random(100,200)
     self.onHit = false
+    self.deathTimer = 0
     
     if cor == "red"    then self.image = love.graphics.newImage("artwork/gfx/naves/e1.png") end
     if cor == "green"  then self.image = love.graphics.newImage("artwork/gfx/naves/e2.png") end
@@ -30,6 +31,9 @@ function DefaultE:draw()
     end
 end
 
+function DefaultE:destroy()
+    self.deathTimer = 0
+end
 
 function DefaultE:update(dt)
     self.y = self.y + (self.speed * dt)
