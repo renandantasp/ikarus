@@ -195,7 +195,7 @@ function GameManager:collide(a, b)
             elseif b == self.buff then -- caso a colisao seja entre player e buff
                 local a_right = enem.x + enem.width
                 local a_bottom = enem.y + enem.height
-                if a_left<blt.x and a_right>blt.x and a_top<blt.y and a_bottom>blt.y then
+                if a_left<blt.x+5 and a_right+5>blt.x and a_top<blt.y+5 and a_bottom+5>blt.y then
                     self.player[1]:updateBuff(enem.tipo)
                     table.remove(self.buff,m)
                 end
