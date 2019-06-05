@@ -86,11 +86,8 @@ function PathLib:update(dt)
     end
 
 
-    if self.func == "static" then 
-    end
-
     if self.func == "log" then
 
-
+        
     end
 end

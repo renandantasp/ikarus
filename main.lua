@@ -9,19 +9,19 @@ function love.load()
     ------------===Gameplay===----------
     require "path.pathLib"
     require "path.path"    
-    require "nave"
-    require "bullet"
-    require "buff"
-    require "player"
+    require "gameplay.nave"
+    require "gameplay.bullet"
+    require "gameplay.buff"
+    require "gameplay.player"
     require "enemies.default"
     require "enemies.cell"
-    require "uiManager"
-    require "menu"
-    require "gameManager"
+    require "mgmt.uiManager"
+    require "mgmt.menu"
+    require "mgmt.gameManager"
     ------------------------------------
 
 
-    gm =  GameManager()
+    gm =  UiManager()
 end
 
 

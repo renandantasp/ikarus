@@ -5,12 +5,16 @@ function GameManager:new()
     self.drawBuff = {}
 
     self.player = {Player()}
+    self.gameOverTimer = 50
+    self.gameOver = false
+    self.menuGameOver = false
     self.enemies = {}
 
     self.spawnTimerE = 0
     self.spawnTimerB = 0
 
     self.enemyIndex = 0
+    
     
     
     
@@ -28,7 +32,7 @@ function GameManager:new()
     self.curWave = 1
     
     self.wave1 = {
-        DefaultE("red"),DefaultE("yellow")
+        DefaultE("red","senx"),Cell()
     }
     self.wave2 = {
         DefaultE("green"),DefaultE("yellow")
@@ -58,8 +62,16 @@ function GameManager:new()
     self.sfxWave4 = love.audio.newSource("artwork/sfx/voicefx/wave4.wav","static")
     self.sfxWave4:setPitch(0.8)
 
+    self.sfxWave4 = love.audio.newSource("artwork/sfx/voicefx/wave4.wav","static")
+    self.sfxWave4:setPitch(0.8)
+
     self.sfxEnter = love.audio.newSource("artwork/sfx/voicefx/enterTheIkarus.wav","static")
     self.sfxEnter:setPitch(0.8)
+
+    self.sfxGameOver = love.audio.newSource("artwork/sfx/voicefx/gameOver.wav","static")
+    self.sfxGameOver:setPitch(0.8)
+
+    self.sfxDed = love.audio.newSource("artwork/sfx/ded.wav","static")
 
     self.splWave1 = love.graphics.newImage("artwork/gfx/wave1.png")
     self.splWave2 = love.graphics.newImage("artwork/gfx/wave2.png")
@@ -104,8 +116,18 @@ function GameManager:update(dt)
     else
         self.parallax2 = 0
     end
-    self:doWave(dt)
-    self.player[1]:update(dt) 
+
+    if self.player[1].health <= 0 then 
+        self.gameOver = true
+        self:gameOverf(dt)
+    else
+        self.player[1]:update(dt) 
+        self:doWave(dt)
+    end
+    if love.keyboard.isDown('f') then
+        self.player[1].health = 0
+    end
+    
     for n,enem in ipairs(self.enemies) do
         enem:update(dt)
     end
@@ -399,8 +421,14 @@ function GameManager:draw()
     love.graphics.draw(self.star1,187*wScale,self.parallax1,0,wScale,wScale,0,240)
     love.graphics.draw(self.star2,187*wScale,self.parallax2,0,wScale,wScale,0,240)
    -----
+
+    if self.gameOver == false then
+        self.player[1]:draw()
+    end
+
+    love.graphics.print(self.gameOverTimer,200*wScale,20*wScale,0,1,1)
+ 
    --inimigos
-    self.player[1]:draw()
     for n,enem in ipairs(self.enemies) do --Desenha todos os inimigos dentro da table enemies
         enem:draw()
     end
@@ -435,30 +463,30 @@ function GameManager:draw()
         end    
     end
    --
-   love.graphics.print(self.sfxTimer,200*wScale,0,0,1,1)
+  
    if self.curWave == 1 then
         if self.sfxTimer < 3 and self.sfxTimer > 1 then
-            love.graphics.draw(self.splWave1,220*wScale,100*wScale,0,wScale,wScale)
+            love.graphics.draw(self.splWave1,220*wScale,80*wScale,0,wScale,wScale)
         end
    end
 
-   if self.curWave == 2 then
-    if self.sfxTimer < 2 and self.sfxTimer > 0.1 then
-        love.graphics.draw(self.splWave2,220*wScale,100*wScale,0,wScale,wScale)
+    if self.curWave == 2 then
+        if self.sfxTimer < 2 and self.sfxTimer > 0.1 then
+            love.graphics.draw(self.splWave2,220*wScale,80*wScale,0,wScale,wScale)
+        end
     end
-end
 
-if self.curWave == 3 then
-    if self.sfxTimer < 2 and self.sfxTimer > 0.1 then
-        love.graphics.draw(self.splWave3,220*wScale,100*wScale,0,wScale,wScale)
+    if self.curWave == 3 then
+        if self.sfxTimer < 2 and self.sfxTimer > 0.1 then
+            love.graphics.draw(self.splWave3,220*wScale,80*wScale,0,wScale,wScale)
+        end
     end
-end
 
-if self.curWave == 4 then
-    if self.sfxTimer < 2 and self.sfxTimer > 0.1 then
-        love.graphics.draw(self.splWave4,220*wScale,100*wScale,0,wScale,wScale)
+    if self.curWave == 4 then
+        if self.sfxTimer < 2 and self.sfxTimer > 0.1 then
+            love.graphics.draw(self.splWave4,220*wScale,80*wScale,0,wScale,wScale)
+        end
     end
-end
  
 end
 
@@ -469,4 +497,24 @@ function GameManager:doTimer(dt)
     if self.sfxTimer < 0 then
         self.sfxTimer = 0
     end 
+end
+
+function GameManager:gameOverf(dt)
+    self.mscWave:stop()
+    if self.gameOverTimer > 0 then
+        self.gameOverTimer = self.gameOverTimer - 10*dt
+    else
+        self.gameOverTimer =0
+    end
+    
+    if self.gameOverTimer <= 50 and self.gameOverTimer > 30 then
+        love.audio.play(self.sfxDed)
+    end
+
+    if self.gameOverTimer > 30 and self.gameOverTimer < 40 then
+        love.audio.play(self.sfxGameOver)
+    end
+    if self.gameOverTimer == 0 then
+        self.menuGameOver = true
+    end
 end

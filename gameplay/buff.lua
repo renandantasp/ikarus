@@ -50,6 +50,7 @@ end
 
 function Buff:draw(x,y)
     if self.ui == false then
+        love.graphics.rectangle("line",self.x,self.y,self.width,self.height)
         self.idle:draw(self.image,self.x,self.y,0,1*wScale,1*wScale)
     end
     if self.ui == true then

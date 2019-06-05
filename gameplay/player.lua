@@ -93,7 +93,7 @@ function Player:updateBuff(tipo)
                 auxBuffPw = auxBuffPw + 0.6       
              end
             if buff.tipo == "speed"  then 
-                auxBuffSp = auxBuffSp + (0.5*wScale)  
+                auxBuffSp = auxBuffSp + (20*wScale)  
             end
             if buff.tipo == "fRate"  then 
                 auxBuffFr = auxBuffFr + 0.8  
@@ -104,7 +104,7 @@ function Player:updateBuff(tipo)
                 auxBuffPw = auxBuffPw + 1.3           
             end
             if buff.tipo == "gSpeed" then 
-                auxBuffSp = auxBuffSp + (0.01*wScale) 
+                auxBuffSp = auxBuffSp + (30*wScale) 
             end
             if buff.tipo == "gFRate" then 
                 auxBuffFr = auxBuffFr + 1             

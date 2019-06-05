@@ -1,16 +1,9 @@
-cell (limpar o codigo) sprites do cabelin
-kamikaze (tudo)
-boss (tudo oh boi)
+kamikaze
+boss
 
 inimigos atirando
-path só falta + funcoes
+log
 
 consertar colisão (vai salmao)
 
-morte
 pause
-
-sons de tiro
-som de seleção
-
-bg do fundo
