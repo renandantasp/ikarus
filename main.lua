@@ -18,6 +18,7 @@ function love.load()
     require "mgmt.uiManager"
     require "mgmt.menu"
     require "mgmt.gameManager"
+    require "mgmt.gamePause"
     ------------------------------------
 
 
