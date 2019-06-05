@@ -42,8 +42,8 @@ end
 
 function DefaultE:draw()
     love.graphics.rectangle("line",self.x,self.y,self.width,self.height)
-    love.graphics.print(self.x,250*wScale,10*wScale,0,1,1)
-    love.graphics.print(self.y,250*wScale,20*wScale,0,1,1)
+    --love.graphics.print(self.x,250*wScale,10*wScale,0,1,1)
+    --love.graphics.print(self.y,250*wScale,20*wScale,0,1,1)
     self.idle:draw(self.image, self.x,self.y,0,wScale,wScale,nil,3*wScale)
     if self.onHit == true then
         love.graphics.draw(self.imgOnHit, self.x,self.y,0,wScale,wScale,nil,3*wScale)

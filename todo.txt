@@ -6,4 +6,4 @@ log
 
 consertar colisão (vai salmao)
 
-pause
+pause?

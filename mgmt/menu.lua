@@ -30,7 +30,7 @@ function Menu:update(dt)
         self.prlx1 = 0
     end
     if self.prlx2 < 240*wScale then
-        self.prlx2 = self.prlx2 + 100*dt*wScale
+        self.prlx2 = self.prlx2 + 150*dt*wScale
     else
         self.prlx2 = 0
     end
@@ -85,7 +85,7 @@ function Menu:draw()
         if self.curSelect%2 == 1 then
             love.graphics.draw(self.seta,176*wScale,139*wScale,0,wScale,wScale)
         elseif self.curSelect%2 == 0 then
-            love.graphics.draw(self.seta,195*wScale,161*wScale,0,wScale,wScale)
+            love.graphics.draw(self.seta,190*wScale,161*wScale,0,wScale,wScale)
         end
     end
     if gm.curState == 3 then

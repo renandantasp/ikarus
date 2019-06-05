@@ -35,13 +35,13 @@ function GameManager:new()
         DefaultE("red","senx"),Cell()
     }
     self.wave2 = {
-        DefaultE("green"),DefaultE("yellow")
+        DefaultE("green","senx"),DefaultE("yellow","senx")
     }
     self.wave3 = {
-        DefaultE("yellow"),DefaultE("yellow")
+        DefaultE("yellow","senx"),DefaultE("yellow","senx")
     }
     self.wave4 = {
-        DefaultE("purple"),DefaultE("yellow")
+        DefaultE("purple","senx"),DefaultE("yellow","senx")
     }
     ---------------------
     --===OST===-------------------------
@@ -426,7 +426,7 @@ function GameManager:draw()
         self.player[1]:draw()
     end
 
-    love.graphics.print(self.gameOverTimer,200*wScale,20*wScale,0,1,1)
+    --love.graphics.print(self.gameOverTimer,200*wScale,20*wScale,0,1,1)
  
    --inimigos
     for n,enem in ipairs(self.enemies) do --Desenha todos os inimigos dentro da table enemies
@@ -442,6 +442,10 @@ function GameManager:draw()
    --ui e logo
     love.graphics.draw(self.bg,0,0,0,1*wScale,1*wScale)
     love.graphics.draw(self.logo,10*wScale,13*wScale,0,1*wScale,1*wScale)
+    love.graphics.print("score",76*wScale,69*wScale,0,1*wScale,1*wScale)
+    love.graphics.print("00000000000",58*wScale,82*wScale,0,1*wScale,1*wScale)
+    love.graphics.print("health",76*wScale,100*wScale,0,1*wScale,1*wScale)
+    love.graphics.print("power-up",68*wScale,183*wScale,0,1*wScale,1*wScale)
 
     for i=1,self.player[1].health do
         love.graphics.draw(self.uiHP,24*wScale + (28*wScale*(i-1)),116*wScale,0,1*wScale,1*wScale)
