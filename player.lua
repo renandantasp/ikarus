@@ -81,6 +81,7 @@ function Player:updateBuff(tipo)
     love.audio.play(sfxPowerUp)
     if tipo ~= "3x" and tipo ~= "5x" and tipo ~= "shield" then
         self.buffRot[(self.buffIndex%3)+1] = Buff(tipo,true)
+
         self.buffIndex = self.buffIndex + 1
         local i=1
         auxBuffPw=0
@@ -88,15 +89,28 @@ function Player:updateBuff(tipo)
         auxBuffFr=0
         for i, buff in ipairs(self.buffRot) do
             --Buff normais
-            if buff.tipo == "power"  then auxBuffPw = auxBuffPw + 0.6           end
-            if buff.tipo == "speed"  then auxBuffSp = auxBuffSp + (0.5*wScale)  end
-            if buff.tipo == "fRate"  then auxBuffFr = auxBuffFr + 0.8           end
+            if buff.tipo == "power"  then 
+                auxBuffPw = auxBuffPw + 0.6       
+             end
+            if buff.tipo == "speed"  then 
+                auxBuffSp = auxBuffSp + (0.5*wScale)  
+            end
+            if buff.tipo == "fRate"  then 
+                auxBuffFr = auxBuffFr + 0.8  
+            end
 
             --Buffs Dourados
-            if buff.tipo == "gPower" then auxBuffPw = auxBuffPw + 1.3           end
-            if buff.tipo == "gSpeed" then auxBuffSp = auxBuffSp + (0.01*wScale) end
-            if buff.tipo == "gFRate" then auxBuffFr = auxBuffFr + 1             end
+            if buff.tipo == "gPower" then 
+                auxBuffPw = auxBuffPw + 1.3           
+            end
+            if buff.tipo == "gSpeed" then 
+                auxBuffSp = auxBuffSp + (0.01*wScale) 
+            end
+            if buff.tipo == "gFRate" then 
+                auxBuffFr = auxBuffFr + 1             
+            end
         end
+
         self.buffDmg = self.shootDamage + auxBuffPw
         self.buffSpeed = self.speed + auxBuffSp
         self.buffFireRate = self.fireRate - auxBuffFr    

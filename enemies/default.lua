@@ -2,12 +2,16 @@ DefaultE = Nave:extend()
 
 function DefaultE:new(cor)
     DefaultE.super.new(self,25)
-    self.x = love.math.random(187*wScale,love.graphics.getWidth()-self.width)
+    if love.math.random(0,1) == 1 then
+        self.x = 150*wScale
+    else
+        self.x = 450*wScale
+    end
     self.y = 0
     self.shootRate = 6
     self.shootTimer = 0
     self.bullet  = {}
-    self.speed = 0.3
+    self.speed = love.math.random(2,3)/10
     self.path = Path(self,"senx")
     self.onHit = false
     self.deathTimer = 0
@@ -40,7 +44,7 @@ end
 
 
 function DefaultE:draw()
-    --love.graphics.rectangle("fill",self.x,self.y,self.width,self.height)
+    love.graphics.rectangle("line",self.x,self.y,self.width,self.height)
     self.idle:draw(self.image, self.x,self.y,0,wScale,wScale,nil,3*wScale)
     if self.onHit == true then
         love.graphics.draw(self.imgOnHit, self.x,self.y,0,wScale,wScale,nil,3*wScale)

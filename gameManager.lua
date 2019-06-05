@@ -3,35 +3,77 @@ GameManager = Object:extend()
 function GameManager:new()
     self.buff = {}
     self.drawBuff = {}
+
     self.player = {Player()}
     self.enemies = {}
+
     self.spawnTimerE = 0
     self.spawnTimerB = 0
-    self.enemyIndex = 0
 
+    self.enemyIndex = 0
+    
+    
+    
 
     -----===Waves===-----
-    self.wave1size = 16
-    self.wave1 = {
-        Cell(),DefaultE("yellow"),
-        DefaultE("green"),DefaultE("yellow"),
-        DefaultE("purple"),DefaultE("red"),
-        DefaultE("purple"),DefaultE("green"),
-        DefaultE("red"),DefaultE("yellow"),
-        DefaultE("green"),DefaultE("yellow"),
-        DefaultE("purple"),DefaultE("red"),
-        DefaultE("purple"),DefaultE("red")
-    }
-    self.wave2 = {}
-    self.wave3 = {}
-    self.wave4 = {}
-    ---------------------
+    self.preWave = true
+    self.posWave = false
+    self.sfxTimer = 7
     
+    self.wave1size = 2
+    self.wave2size = 2
+    self.wave3size = 2
+    self.wave4size = 2
+    
+    self.curWave = 1
+    
+    self.wave1 = {
+        DefaultE("red"),DefaultE("yellow")
+    }
+    self.wave2 = {
+        DefaultE("green"),DefaultE("yellow")
+    }
+    self.wave3 = {
+        DefaultE("yellow"),DefaultE("yellow")
+    }
+    self.wave4 = {
+        DefaultE("purple"),DefaultE("yellow")
+    }
+    ---------------------
+    --===OST===-------------------------
+    self.mscWave = love.audio.newSource("artwork/sfx/Wave1n3.wav","stream")
+    self.mscWave:setVolume(0.7)
+
+    self.mscWaveClear = love.audio.newSource("artwork/sfx/stageClear.wav","stream")
+    
+    self.sfxWave1 = love.audio.newSource("artwork/sfx/voicefx/wave1.wav","static")
+    self.sfxWave1:setPitch(0.8)
+    
+    self.sfxWave2 = love.audio.newSource("artwork/sfx/voicefx/wave2.wav","static")
+    self.sfxWave2:setPitch(0.8)
+    
+    self.sfxWave3 = love.audio.newSource("artwork/sfx/voicefx/wave3.wav","static")
+    self.sfxWave3:setPitch(0.8)
+    
+    self.sfxWave4 = love.audio.newSource("artwork/sfx/voicefx/wave4.wav","static")
+    self.sfxWave4:setPitch(0.8)
+
+    self.sfxEnter = love.audio.newSource("artwork/sfx/voicefx/enterTheIkarus.wav","static")
+    self.sfxEnter:setPitch(0.8)
+
+    self.splWave1 = love.graphics.newImage("artwork/gfx/wave1.png")
+    self.splWave2 = love.graphics.newImage("artwork/gfx/wave2.png")
+    self.splWave3 = love.graphics.newImage("artwork/gfx/wave3.png")
+    self.splWave4 = love.graphics.newImage("artwork/gfx/wave4.png")
+
+
     --fonte---
     --font = love.graphics.newImageFont("artwork/fonte/XXX.png",  " !\"#$%&'()*+,-./0123456789:;<=>?@ÁÀÂÃABCÇDEÉÊFGHIÍJKLMNÑOÓÔPQRSTUÚVWXYZ[\\]^_`áàâãabcçdeéêfghiíjklmnñoóôpqrstuúvwxyz{|}")
     --love.graphics.setFont(font)
     --------
-    
+
+
+
     --===Imagens da Hud===--------------
     self.bg = love.graphics.newImage("artwork/HUD.png")
     self.logo = love.graphics.newImage("artwork/J-IKARUS.png")
@@ -42,10 +84,26 @@ function GameManager:new()
         love.graphics.newImage("artwork/gfx/UI/inGame/UIShield3.png")
     }
     -------------------------------------
+
+    --===Imagens da fase===--------------
+    self.star1 = love.graphics.newImage("artwork/gfx/estrela1.png")
+    self.star2 = love.graphics.newImage("artwork/gfx/estrela2.png")
+    self.parallax1 = 0
+    self.parallax2 = 0
+    ------------------------------------
 end
 
 function GameManager:update(dt)
-    
+    if self.parallax1 < 240*wScale then
+        self.parallax1 = self.parallax1 + (250*wScale*dt)
+    else
+        self.parallax1 = 0
+    end
+    if self.parallax2 < 240*wScale then
+        self.parallax2 = self.parallax2 + (150*wScale*dt)
+    else
+        self.parallax2 = 0
+    end
     self:doWave(dt)
     self.player[1]:update(dt) 
     for n,enem in ipairs(self.enemies) do
@@ -174,28 +232,186 @@ function GameManager:spawnB(dt)
 end
 
 function GameManager:doWave(dt)
-    if not (next(self.wave1) == nil)  then
-        if self.enemyIndex == 0 then
-            self.enemyIndex = self.wave1size
+    if self.curWave == 1 then
+        --Pre Wave 1
+        if self.preWave == true then
+            if self.sfxTimer == 7 then
+                love.audio.play(self.sfxEnter)
+            end
+            if self.sfxTimer < 3 and self.sfxTimer > 1 then
+                love.audio.play(self.sfxWave1)
+            end
+            self:doTimer(dt)
+            if self.sfxTimer == 0 then
+                self.timer = 1000*dt 
+                self.preWave = false
+            end
         end
-        self.waveTimer = 30
-        self:spawnE(dt,self.wave1)
-        self:spawnB(dt)
+
+        --Wave 1
+        if not (next(self.wave1) == nil) and self.preWave == false then
+            love.audio.play(self.mscWave)
+            self.sfxTimer = 1000*dt
+            if self.enemyIndex == 0 then
+                self.enemyIndex = self.wave1size
+            end
+            self.waveTimer = 30
+            self:spawnE(dt,self.wave1)
+            self:spawnB(dt)
+        end
+
+        --pos 1st wave
+        if (next(self.wave1) == nil) and (next(self.enemies) == nil) then
+            self.mscWave:seek(0,"seconds")
+            self.mscWave:stop(self.mscWave)
+            
+            self.curWave = 2
+            love.audio.play(self.mscWaveClear)
+            self.preWave = true
+            self.sfxTimer = 800*dt
+        end
     end
+
+    if self.curWave == 2 then
+        --Pre Wave 2
+        if self.preWave == true then
+            self:doTimer(dt)
+            if self.sfxTimer < 2 and self.sfxTimer > 1 then
+                love.audio.play(self.sfxWave2)
+            end
+            if self.sfxTimer == 0 then
+                love.audio.play(self.mscWave)
+                self.timer = 1000*dt
+                self.preWave = false
+            end
+        end
+
+        --Wave 2
+        if not (next(self.wave2) == nil) and self.preWave == false then
+            love.audio.play(self.mscWave)
+            self.sfxTimer = 1000*dt
+            if self.enemyIndex == 0 then
+                self.enemyIndex = self.wave2size
+            end
+            self.waveTimer = 30
+            self:spawnE(dt,self.wave2)
+            self:spawnB(dt)
+        end
+
+        --pos Wave 2
+        if (next(self.wave2) == nil) and (next(self.enemies) == nil) then
+            self.mscWave:seek(0,"seconds")
+            self.mscWave:stop(self.mscWave)
+            
+            self.curWave = 3
+            love.audio.play(self.mscWaveClear)
+            self.preWave = true
+            self.sfxTimer = 1000*dt
+        end
+    end
+
+    if self.curWave == 3 then
+        --Pre Wave 3
+        if self.preWave == true then
+            self:doTimer(dt)
+            if self.sfxTimer < 2 and self.sfxTimer > 1 then
+                love.audio.play(self.sfxWave3)
+            end
+            if self.sfxTimer == 0 then
+                love.audio.play(self.mscWave)
+                self.timer = 1000*dt
+                self.preWave = false
+            end
+        end
+
+        --Wave 3
+        if not (next(self.wave3) == nil) and self.preWave == false then
+            love.audio.play(self.mscWave)
+            self.sfxTimer = 1000*dt
+            if self.enemyIndex == 0 then
+                self.enemyIndex = self.wave3size
+            end
+            self.waveTimer = 30
+            self:spawnE(dt,self.wave3)
+            self:spawnB(dt)
+        end
+
+        --pos Wave 3
+        if (next(self.wave3) == nil) and (next(self.enemies) == nil) then
+            self.mscWave:seek(0,"seconds")
+            self.mscWave:stop(self.mscWave)
+            
+            self.curWave = 4
+            love.audio.play(self.mscWaveClear)
+            self.preWave = true
+            self.sfxTimer = 1000*dt
+        end
+    end
+
+    if self.curWave == 4 then
+        --Pre Wave 4
+        if self.preWave == true then
+            self:doTimer(dt)
+            if self.sfxTimer < 2 and self.sfxTimer > 1 then
+                love.audio.play(self.sfxWave4)
+            end
+            if self.sfxTimer == 0 then
+                love.audio.play(self.mscWave)
+                self.timer = 1000*dt
+                self.preWave = false
+            end
+        end
+
+        --Wave 4
+        if not (next(self.wave4) == nil) and self.preWave == false then
+            love.audio.play(self.mscWave)
+            self.sfxTimer = 1000*dt
+            if self.enemyIndex == 0 then
+                self.enemyIndex = self.wave4size
+            end
+            self.waveTimer = 30
+            self:spawnE(dt,self.wave4)
+            self:spawnB(dt)
+        end
+
+        --pos Wave 4
+        if (next(self.wave4) == nil) and (next(self.enemies) == nil) then
+            self.mscWave:seek(0,"seconds")
+            self.mscWave:stop(self.mscWave)
+            
+            self.curWave = 5
+            love.audio.play(self.mscWaveClear)
+            self.preWave = true
+            self.sfxTimer = 1000*dt
+        end
+    end
+
+
+
+
+
 end
 
 
 function GameManager:draw()
+
+   --Parallax
+    love.graphics.draw(self.star1,187*wScale,self.parallax1,0,wScale,wScale,0,240)
+    love.graphics.draw(self.star2,187*wScale,self.parallax2,0,wScale,wScale,0,240)
+   -----
+   --inimigos
     self.player[1]:draw()
     for n,enem in ipairs(self.enemies) do --Desenha todos os inimigos dentro da table enemies
         enem:draw()
     end
-    
+   --
+   --buffs 
     for n,buffs in ipairs(self.buff) do --Desenha todos os buffs presentes na table buff
         buffs:draw()
     end
+   --
 
-
+   --ui e logo
     love.graphics.draw(self.bg,0,0,0,1*wScale,1*wScale)
     love.graphics.draw(self.logo,10*wScale,13*wScale,0,1*wScale,1*wScale)
 
@@ -216,10 +432,41 @@ function GameManager:draw()
             for i=1,self.player[1].shield do
                 buff:draw((55 + 25*(i-1)) * wScale,149*wScale)
             end
-        end
-        
+        end    
     end
-    
-    --]]
+   --
+   love.graphics.print(self.sfxTimer,200*wScale,0,0,1,1)
+   if self.curWave == 1 then
+        if self.sfxTimer < 3 and self.sfxTimer > 1 then
+            love.graphics.draw(self.splWave1,220*wScale,100*wScale,0,wScale,wScale)
+        end
+   end
+
+   if self.curWave == 2 then
+    if self.sfxTimer < 2 and self.sfxTimer > 0.1 then
+        love.graphics.draw(self.splWave2,220*wScale,100*wScale,0,wScale,wScale)
+    end
+end
+
+if self.curWave == 3 then
+    if self.sfxTimer < 2 and self.sfxTimer > 0.1 then
+        love.graphics.draw(self.splWave3,220*wScale,100*wScale,0,wScale,wScale)
+    end
+end
+
+if self.curWave == 4 then
+    if self.sfxTimer < 2 and self.sfxTimer > 0.1 then
+        love.graphics.draw(self.splWave4,220*wScale,100*wScale,0,wScale,wScale)
+    end
+end
  
+end
+
+function GameManager:doTimer(dt)
+    if self.sfxTimer > 0 then
+        self.sfxTimer = self.sfxTimer - 1*dt
+    end
+    if self.sfxTimer < 0 then
+        self.sfxTimer = 0
+    end 
 end

@@ -2,11 +2,17 @@ Buff = Object:extend()
 
 function Buff:new(tipo,ui)
     self.tipo = tipo
+
     self.width = 18*wScale
     self.height = 10*wScale
+
     self.x = love.math.random(187*wScale, love.graphics.getWidth()-self.width)
     self.y = 0
+    self.speed = 0.1
+
     self.ui = ui or false
+    self.path = Path(self,"buff")
+    
 
     --Define qual tipo de imagem de buff vai usar
     if self.tipo == "power" then self.image = love.graphics.newImage("artwork/gfx/UI/inGame/Pw-Sheet.png") end
@@ -34,7 +40,10 @@ end
 
 function Buff:update(dt)
     if self.ui == false then
-        self.y = self.y + 50 * wScale * dt;
+        self.path:update(dt)
+        self.x = self.path.x
+        self.y = self.path.y
+        
     end
     self.idle:update(dt)
 end
