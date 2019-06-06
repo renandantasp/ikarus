@@ -139,8 +139,9 @@ function GameManager:update(dt)
     
     --COLISÕES--
     self:collide(self.player[1].bullet,self.enemies)
-    self:collide(self.player,self.enemies)
-    self:collide(self.player,self.buff)
+    --self:collide(self.player,self.enemies)
+    self:collideE(self.player,self.enemies)
+    self:collideB(self.player,self.buff)
    
     
 end
@@ -192,13 +193,6 @@ function GameManager:collide(a, b)
                         
                     end
                 end
-            elseif b == self.buff then -- caso a colisao seja entre player e buff
-                local a_right = enem.x + enem.width
-                local a_bottom = enem.y + enem.height
-                if a_left<blt.x+5 and a_right+5>blt.x and a_top<blt.y+5 and a_bottom+5>blt.y then
-                    self.player[1]:updateBuff(enem.tipo)
-                    table.remove(self.buff,m)
-                end
             end
             
             
@@ -207,6 +201,56 @@ function GameManager:collide(a, b)
     --print(type(b))
 end
 
+function GameManager:collideB(ps,bs)
+    for n,buff in ipairs(bs) do
+        for m, ply in ipairs(ps) do
+            local b_left = buff.x
+            local b_right = buff.x + buff.width
+            local b_top = buff.y 
+            local b_bottom = buff.y + buff.height
+            --print(b_left,b_right,b_top,b_bottom)
+            local p_left = ply.x
+            local p_right = ply.x + ply.width
+            local p_top = ply.y
+            local p_bottom = ply.y + ply.height
+            
+            --print(p_left,p_right,p_top,p_bottom)
+            if b_left<p_right and b_right>p_left and b_top<p_bottom and b_bottom>p_top then
+                self.player[1]:updateBuff(buff.tipo)
+                table.remove(self.buff,n)
+            end
+        end
+    end
+end
+
+function GameManager:collideE(ps,enmy)
+    for n,ply in ipairs(ps) do
+        for m, enem in ipairs(enmy) do
+            local b_left = enem.x
+            local b_right = enem.x + enem.width
+            local b_top = enem.y 
+            local b_bottom = enem.y + enem.height
+            
+            local p_left = ply.x
+            local p_right = ply.x + ply.width
+            local p_top = ply.y
+            local p_bottom = ply.y + ply.height
+            
+            
+            if b_left<p_right and b_right>p_left and b_top<p_bottom and b_bottom>p_top then
+                love.audio.play(sfxHurt)
+                table.remove(self.enemies,m)
+                if self.player[1].shield > 0 then
+                    self.player[1].shield = self.player[1].shield - 1
+                else
+                    self.player[1].health = self.player[1].health - 1
+                end
+            end
+        end
+    end
+
+
+end
 function GameManager:spawnE(dt,curWave)
     
     if self.spawnTimerE == 0 then
